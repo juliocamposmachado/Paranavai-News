@@ -19,6 +19,12 @@ const PORTAIS_PARCEIROS = [
         cor: "#0078d4"
     },
     {
+        nome: "Noroeste Online",
+        url: "https://www.noroesteonline.com",
+        logo: "https://via.placeholder.com/150x50/2e7d32/ffffff?text=Noroeste+Online",
+        cor: "#2e7d32"
+    },
+    {
         nome: "Bem Paraná",
         url: "https://www.bemparana.com.br",
         logo: "https://www.bemparana.com.br/wp-content/themes/bemparana/assets/images/logo.png",

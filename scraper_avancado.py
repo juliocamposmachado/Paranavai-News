@@ -62,8 +62,8 @@ PORTAIS_PARCEIROS = [
     },
     {
         "nome": "Noroeste Online",
-        "url": "https://www.noroesteonline.com.br",
-        "busca": "https://www.noroesteonline.com.br/tag/paranavai",
+        "url": "https://www.noroesteonline.com",
+        "busca": "https://www.noroesteonline.com/",
         "logo": "assets/images/parceiros/noroeste-online.png",
         "cor": "#2e7d32",
         "selectors": {
