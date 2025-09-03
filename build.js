@@ -15,6 +15,9 @@ if (fs.existsSync('index.html')) {
     console.log('✓ Copiado: index.html');
 }
 
+// Cria diretório pages dentro de public
+fs.mkdirSync('public/pages', { recursive: true });
+
 // Lista de arquivos HTML para copiar do diretório pages
 const pageFiles = [
     'politica.html',
@@ -26,11 +29,11 @@ const pageFiles = [
     'matheus.html'
 ];
 
-// Copia arquivos HTML do diretório pages
+// Copia arquivos HTML do diretório pages mantendo a estrutura
 pageFiles.forEach(file => {
     const sourcePath = `pages/${file}`;
     if (fs.existsSync(sourcePath)) {
-        fs.copyFileSync(sourcePath, `public/${file}`);
+        fs.copyFileSync(sourcePath, `public/pages/${file}`);
         console.log(`✓ Copiado: pages/${file}`);
     }
 });
