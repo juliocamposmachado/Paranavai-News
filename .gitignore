@@ -147,6 +147,7 @@ debug.log
 build/
 dist/
 out/
+public/
 
 # Static site generators
 _site/
