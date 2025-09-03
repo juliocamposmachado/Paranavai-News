@@ -302,12 +302,19 @@ def extrair_noticias_portal(portal, sessao):
                 
                 # Validar dados essenciais
                 if titulo and link:
-                    # Normalizar URLs
+                    # Normalizar URLs para garantir links completos
                     if link and not link.startswith('http'):
                         if link.startswith('/'):
                             link = portal['url'] + link
                         else:
                             link = portal['url'] + '/' + link
+                    
+                    # Garantir que o link seja válido e acessível
+                    try:
+                        from urllib.parse import urljoin
+                        link = urljoin(portal['url'], link)
+                    except:
+                        link = portal['url']  # Fallback para URL do portal
                     
                     if imagem and not imagem.startswith('http'):
                         if imagem.startswith('/'):
@@ -316,19 +323,20 @@ def extrair_noticias_portal(portal, sessao):
                             imagem = portal['url'] + '/' + imagem
                     
                     # Limitar tamanho do resumo
-                    if resumo and len(resumo) > 200:
-                        resumo = resumo[:200] + "..."
+                    if resumo and len(resumo) > 250:
+                        resumo = resumo[:250] + "..."
                     
                     noticia = {
                         "titulo": titulo,
-                        "resumo": resumo or titulo[:100] + "...",
-                        "link": link,
+                        "resumo": resumo or titulo[:150] + "...",
+                        "link": link,  # Link específico da notícia do portal parceiro
                         "imagem": imagem or f"https://via.placeholder.com/400x300/{portal['cor'][1:]}/ffffff?text={portal['nome'].replace(' ', '+')}",
                         "data": data,
                         "fonte": portal['nome'],
                         "corFonte": portal['cor'],
                         "logoFonte": portal['logo'],
-                        "coletadoEm": datetime.now().isoformat()
+                        "coletadoEm": datetime.now().isoformat(),
+                        "urlOriginal": link  # Para garantir que temos o link original
                     }
                     
                     noticias.append(noticia)

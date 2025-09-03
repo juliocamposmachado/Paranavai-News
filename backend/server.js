@@ -254,31 +254,49 @@ async function scrapearPortal(portal) {
             const $el = $(element);
             
             const titulo = $el.find(portal.selector.titulo).first().text().trim();
-            const resumo = $el.find(portal.selector.resumo).first().text().trim().substring(0, 150);
-            const link = $el.find(portal.selector.link).first().attr('href');
+            const resumo = $el.find(portal.selector.resumo).first().text().trim().substring(0, 200);
+            let link = $el.find(portal.selector.link).first().attr('href');
             const imagem = $el.find(portal.selector.imagem).first().attr('src');
             const data = $el.find(portal.selector.data).first().text().trim();
             
             if (titulo && link) {
+                // Garantir que o link seja completo e acessível
                 let linkCompleto = link;
                 if (!link.startsWith('http')) {
-                    linkCompleto = new URL(link, portal.url).href;
+                    if (link.startsWith('/')) {
+                        linkCompleto = portal.url + link;
+                    } else {
+                        linkCompleto = portal.url + '/' + link;
+                    }
+                }
+                
+                // Normalizar URL para evitar problemas
+                try {
+                    linkCompleto = new URL(linkCompleto).href;
+                } catch (e) {
+                    // Se não conseguir criar URL válida, usar URL do portal
+                    linkCompleto = portal.url;
                 }
                 
                 let imagemCompleta = imagem;
                 if (imagem && !imagem.startsWith('http')) {
-                    imagemCompleta = new URL(imagem, portal.url).href;
+                    if (imagem.startsWith('/')) {
+                        imagemCompleta = portal.url + imagem;
+                    } else {
+                        imagemCompleta = portal.url + '/' + imagem;
+                    }
                 }
                 
                 noticias.push({
                     titulo: titulo,
-                    resumo: resumo || titulo.substring(0, 100) + '...',
+                    resumo: resumo || titulo.substring(0, 150) + '...',
                     link: linkCompleto,
                     imagem: imagemCompleta || `https://via.placeholder.com/400x300/1e4a73/ffffff?text=${encodeURIComponent(portal.nome)}`,
                     data: data || 'Hoje',
                     fonte: portal.nome,
                     corFonte: portal.cor,
-                    logoFonte: portal.logo
+                    logoFonte: portal.logo,
+                    urlOriginal: linkCompleto // Link específico da notícia
                 });
             }
         });

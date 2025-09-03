@@ -50,6 +50,21 @@ const PORTAIS_PARCEIROS = [
         tipo: "bing_news"
     },
     {
+        nome: "Noroeste Online",
+        url: "https://www.noroesteonline.com",
+        busca: "https://www.noroesteonline.com/",
+        logo: "https://via.placeholder.com/150x50/2e7d32/ffffff?text=Noroeste+Online",
+        cor: "#2e7d32",
+        selector: {
+            artigos: ".post-item, article, .news",
+            titulo: ".post-title a, h2 a, .headline a",
+            resumo: ".post-excerpt, .excerpt, .lead",
+            link: ".post-title a, h2 a, .headline a",
+            imagem: ".post-thumb img, .thumbnail img",
+            data: ".post-date, .timestamp"
+        }
+    },
+    {
         nome: "Bem Paraná",
         url: "https://www.bemparana.com.br",
         busca: "https://www.bemparana.com.br/?s=paranavai",
