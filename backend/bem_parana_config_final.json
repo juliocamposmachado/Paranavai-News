@@ -1,0 +1,17 @@
+{
+  "nome": "Bem Paraná",
+  "url": "https://www.bemparana.com.br",
+  "busca": "https://www.bemparana.com.br/?s=paranavai",
+  "logo": "https://www.bemparana.com.br/wp-content/themes/bemparana/assets/images/logo.png",
+  "cor": "#ff6900",
+  "selector": {
+    "artigos": "article, .post, .entry",
+    "titulo": "h2 a, h3 a, .entry-title a",
+    "resumo": ".excerpt, .entry-summary, p",
+    "link": "h2 a, h3 a, .entry-title a",
+    "imagem": ".wp-post-image, img",
+    "data": ".date, .entry-date, time"
+  },
+  "testeBemSucedido": true,
+  "baseadoEmAnaliseUsuario": true
+}

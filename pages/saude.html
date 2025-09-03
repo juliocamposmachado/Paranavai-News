@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saúde - Paranavaí News</title>
+    <meta name="description" content="Acompanhe as notícias de saúde da região de Paranavaí e Paraná. SUS, políticas públicas e desenvolvimento da saúde regional.">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../index.html" style="color: white; text-decoration: none;"><i class="fas fa-newspaper"></i> Paranavaí News</a></h1>
+                <p>Portal de Notícias da Região</p>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="politica.html">Política</a></li>
+                    <li><a href="saude.html">Saúde</a></li>
+                    <li><a href="agronegocio.html">Agronegócio</a></li>
+                    <li><a href="turismo.html">Turismo</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Banner da Categoria -->
+    <section class="category-hero">
+        <div class="container">
+            <div class="category-header">
+                <i class="fas fa-heartbeat"></i>
+                <h1>Saúde</h1>
+                <p>Notícias sobre o sistema de saúde, SUS e políticas públicas de saúde na região</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notícias de Saúde dos Portais -->
+    <section class="category-news-section">
+        <div class="container">
+            <h2 class="section-title">Notícias de Saúde</h2>
+            <div class="category-intro">
+                <p>Acompanhe as últimas notícias de saúde coletadas automaticamente dos principais portais da região</p>
+                <div class="update-info">
+                    <span id="last-update-categoria">Carregando notícias...</span>
+                    <button onclick="forcarAtualizacaoCategoria()" class="btn-update" title="Forçar atualização">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Container para notícias de saúde -->
+            <div class="loading-placeholder" id="loading-categoria">
+                <div class="loading-spinner"></div>
+                <p>Coletando notícias de saúde...</p>
+            </div>
+            
+            <div class="news-list-container" id="noticias-categoria" style="display: none;"></div>
+            
+            <div class="category-footer">
+                <p class="disclaimer-categoria">
+                    <i class="fas fa-info-circle"></i>
+                    As notícias são coletadas automaticamente dos portais parceiros com foco em saúde. 
+                    Clique nos títulos para ver a matéria completa no site original.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destaques de Saúde Regional -->
+    <section class="health-highlights">
+        <div class="container">
+            <h2 class="section-title">Destaques de Saúde Regional</h2>
+            <div class="highlights-grid">
+                <div class="highlight-card">
+                    <div class="highlight-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <div class="highlight-content">
+                        <h3>Hospital Regional</h3>
+                        <p>Nova ala em construção com 50 novos leitos e equipamentos modernos para atender a região noroeste do Paraná</p>
+                        <span class="highlight-status">Em andamento</span>
+                    </div>
+                </div>
+
+                <div class="highlight-card">
+                    <div class="highlight-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="highlight-content">
+                        <h3>Programa Residência Médica</h3>
+                        <p>Projeto do Deputado Leônidas para fixar médicos especialistas na região através de incentivos</p>
+                        <span class="highlight-status approved">Aprovado</span>
+                    </div>
+                </div>
+
+                <div class="highlight-card">
+                    <div class="highlight-icon">
+                        <i class="fas fa-syringe"></i>
+                    </div>
+                    <div class="highlight-content">
+                        <h3>Campanha de Vacinação</h3>
+                        <p>Cobertura vacinal da região atinge 95%, superando as metas estabelecidas pelo Ministério da Saúde</p>
+                        <span class="highlight-status success">Concluído</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Portal Paranavaí News</h3>
+                    <p>Cobertura completa de saúde da região de Paranavaí e Paraná.</p>
+                    <a href="../index.html" class="btn-back">← Voltar ao Portal</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Outras Categorias</h3>
+                    <ul>
+                        <li><a href="politica.html">Política</a></li>
+                        <li><a href="agronegocio.html">Agronegócio</a></li>
+                        <li><a href="turismo.html">Turismo</a></li>
+                        <li><a href="../index.html">Página Principal</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> (44) 99982-3193</p>
+                        <p><i class="fas fa-envelope"></i> saude@paranavainews.com.br</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .category-hero {
+            background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .category-header i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ffeb3b;
+        }
+
+        .category-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .category-news-section {
+            padding: 4rem 0;
+            background: #f5f5f5;
+        }
+
+        .category-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .category-intro p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .news-list-container {
+            display: block;
+            gap: 0;
+        }
+
+        .health-highlights {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .highlight-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #d32f2f;
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .highlight-icon {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-icon i {
+            font-size: 3rem;
+            color: #d32f2f;
+        }
+
+        .highlight-content {
+            text-align: center;
+        }
+
+        .highlight-content h3 {
+            color: #1e4a73;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .highlight-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-status {
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .highlight-status.approved {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .highlight-status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        @media (max-width: 768px) {
+            .category-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/categoria-noticias.js"></script>
+    
+    <script>
+        // Inicializar sistema de notícias de saúde
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarCategoriaNoticias('saude');
+        });
+    </script>
+</body>
+</html>

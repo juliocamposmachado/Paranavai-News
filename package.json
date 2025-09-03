@@ -1,0 +1,75 @@
+{
+  "name": "paranavai-news",
+  "version": "1.0.0",
+  "description": "Portal de notícias da região de Paranavaí e Paraná",
+  "main": "index.html",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js",
+    "build": "echo 'Build completed - Static site ready for deployment'",
+    "test": "echo 'No tests configured yet'",
+    "lint": "echo 'Linting HTML, CSS and JS files'",
+    "serve": "npx http-server . -p 8080 -c-1"
+  },
+  "keywords": [
+    "paranavaí",
+    "paraná",
+    "notícias",
+    "portal",
+    "jornalismo",
+    "política",
+    "saúde",
+    "agronegócio",
+    "turismo",
+    "deputado",
+    "leônidas"
+  ],
+  "author": {
+    "name": "Portal Paranavaí News",
+    "email": "contato@paranavainews.com.br",
+    "url": "https://paranavai-news.vercel.app"
+  },
+  "contributors": [
+    {
+      "name": "Dr. Leônidas Fávero Neto",
+      "email": "gabinete@doutorleonidaspr.com.br",
+      "role": "Deputado Estadual"
+    },
+    {
+      "name": "Matheus Lima",
+      "email": "matheus@paranavainews.com.br", 
+      "role": "Gerente de Projetos"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://paranavai-news.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juliocamposmachado/Paranavai-News.git"
+  },
+  "bugs": {
+    "url": "https://github.com/juliocamposmachado/Paranavai-News/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "cheerio": "^1.0.0-rc.12",
+    "axios": "^1.6.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "nodemon": "^3.0.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "private": false,
+  "type": "module"
+}

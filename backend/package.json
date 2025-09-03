@@ -1,0 +1,39 @@
+{
+  "name": "portal-paranavai-news-api",
+  "version": "1.0.0",
+  "description": "API backend para Portal Paranavaí News - Sistema de coleta de notícias",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "install-deps": "npm install",
+    "scraper": "cd .. && python scraper_avancado.py"
+  },
+  "keywords": [
+    "portal",
+    "noticias",
+    "paranavai",
+    "parana",
+    "scraping",
+    "api"
+  ],
+  "author": "Matheus Lima <matheus@paranavainews.com.br>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "node-cron": "^3.0.3",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

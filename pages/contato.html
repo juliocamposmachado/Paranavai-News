@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Portal Paranavaí News</title>
+    <meta name="description" content="Entre em contato com o Portal Paranavaí News. Fale conosco sobre notícias, sugestões ou parcerias.">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../index.html" style="color: white; text-decoration: none;"><i class="fas fa-newspaper"></i> Paranavaí News</a></h1>
+                <p>Portal de Notícias da Região</p>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="politica.html">Política</a></li>
+                    <li><a href="saude.html">Saúde</a></li>
+                    <li><a href="leonidas.html">Dr. Leônidas</a></li>
+                    <li><a href="matheus.html">Matheus Lima</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Banner de Contato -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="contact-header">
+                <i class="fas fa-envelope"></i>
+                <h1>Entre em Contato</h1>
+                <p>Estamos aqui para ouvir você. Envie sugestões, denúncias ou propostas de parceria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulário Principal -->
+    <section class="main-contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-form-section">
+                    <h2>Envie sua Mensagem</h2>
+                    <form class="contact-form-main">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome Completo</label>
+                                <input type="text" id="nome" placeholder="Digite seu nome completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="seu@email.com" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" id="telefone" placeholder="(44) 99999-9999">
+                            </div>
+                            <div class="form-group">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" id="cidade" placeholder="Sua cidade" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assunto">Assunto</label>
+                            <select id="assunto" required>
+                                <option value="">Selecione o assunto</option>
+                                <option value="denuncia">Denúncia</option>
+                                <option value="sugestao">Sugestão de Pauta</option>
+                                <option value="parceria">Proposta de Parceria</option>
+                                <option value="assessoria">Assessoria de Imprensa</option>
+                                <option value="gabinete">Contato com Gabinete</option>
+                                <option value="fotografia">Serviços de Fotografia</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mensagem">Mensagem</label>
+                            <textarea id="mensagem" placeholder="Escreva sua mensagem detalhadamente..." rows="6" required></textarea>
+                        </div>
+
+                        <div class="form-group privacy">
+                            <label class="checkbox-label">
+                                <input type="checkbox" required>
+                                <span class="checkbox-custom"></span>
+                                Concordo com o tratamento dos meus dados pessoais conforme nossa política de privacidade
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-submit-main">
+                            <i class="fas fa-paper-plane"></i> Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+
+                <div class="contact-info-section">
+                    <h2>Informações de Contato</h2>
+                    
+                    <div class="contact-card">
+                        <h3><i class="fas fa-newspaper"></i> Portal Paranavaí News</h3>
+                        <div class="contact-details">
+                            <p><i class="fas fa-envelope"></i> contato@paranavainews.com.br</p>
+                            <p><i class="fas fa-phone"></i> (44) 99982-3193</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Paranavaí - PR</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h3><i class="fas fa-user-md"></i> Deputado Leônidas</h3>
+                        <div class="contact-details">
+                            <p><i class="fas fa-building"></i> Assembleia Legislativa do PR</p>
+                            <p><i class="fas fa-globe"></i> <a href="https://doutorleonidaspr.com.br/" target="_blank">doutorleonidaspr.com.br</a></p>
+                            <p><i class="fas fa-envelope"></i> gabinete@doutorleonidaspr.com.br</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h3><i class="fas fa-camera"></i> Matheus Lima</h3>
+                        <div class="contact-details">
+                            <p><i class="fas fa-briefcase"></i> Gerente de Projetos</p>
+                            <p><i class="fas fa-globe"></i> <a href="https://matheuslima29mx.46graus.com" target="_blank">Portfólio Fotográfico</a></p>
+                            <p><i class="fas fa-phone"></i> (44) 99982-3193</p>
+                        </div>
+                    </div>
+
+                    <div class="social-media-section">
+                        <h3>Siga nossas Redes Sociais</h3>
+                        <div class="social-links-grid">
+                            <a href="#" class="social-link-large facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="#" class="social-link-large instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#" class="social-link-large twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="#" class="social-link-large youtube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Perguntas Frequentes</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3><i class="fas fa-question-circle"></i> Como enviar uma denúncia?</h3>
+                    <p>Use nosso formulário de contato selecionando "Denúncia" como assunto. Todas as informações são tratadas com confidencialidade.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3><i class="fas fa-question-circle"></i> Como sugerir uma pauta?</h3>
+                    <p>Envie sua sugestão através do formulário ou pelos nossos canais de contato. Nossa equipe avalia todas as propostas.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3><i class="fas fa-question-circle"></i> Posso solicitar uma entrevista?</h3>
+                    <p>Sim! Entre em contato especificando o tema e a pessoa que gostaria de entrevistar. Analisaremos a viabilidade.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3><i class="fas fa-question-circle"></i> Como contratar serviços de fotografia?</h3>
+                    <p>Entre em contato diretamente com Matheus Lima através dos canais informados ou visite seu portfólio profissional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Portal Paranavaí News</h3>
+                    <p>Portal oficial de notícias da região de Paranavaí e Paraná.</p>
+                    <a href="../index.html" class="btn-back">← Voltar ao Portal</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contatos Rápidos</h3>
+                    <ul>
+                        <li><a href="tel:+5544999823193">(44) 99982-3193</a></li>
+                        <li><a href="mailto:contato@paranavainews.com.br">Email Geral</a></li>
+                        <li><a href="mailto:redacao@paranavainews.com.br">Redação</a></li>
+                        <li><a href="mailto:comercial@paranavainews.com.br">Comercial</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Horário de Atendimento</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-clock"></i> Segunda a Sexta: 8h às 18h</p>
+                        <p><i class="fas fa-clock"></i> Sábado: 8h às 12h</p>
+                        <p><i class="fas fa-mobile-alt"></i> WhatsApp: 24h</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Portal Paranavaí News. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .contact-hero {
+            background: linear-gradient(135deg, #1e4a73 0%, #2c5f8a 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .contact-header i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ffeb3b;
+        }
+
+        .contact-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .main-contact {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form-section h2 {
+            color: #1e4a73;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .contact-form-main {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e4a73;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #1e4a73;
+            box-shadow: 0 0 0 2px rgba(30, 74, 115, 0.1);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-custom {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 3px;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            margin-top: 2px;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+            background: #1e4a73;
+            border-color: #1e4a73;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-submit-main {
+            background: linear-gradient(45deg, #1e4a73, #2c5f8a);
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .btn-submit-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .contact-info-section h2 {
+            color: #1e4a73;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .contact-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #1e4a73;
+        }
+
+        .contact-card h3 {
+            color: #1e4a73;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .contact-card h3 i {
+            margin-right: 0.5rem;
+            color: #ffeb3b;
+        }
+
+        .contact-details p {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .contact-details i {
+            margin-right: 0.5rem;
+            color: #1e4a73;
+            width: 15px;
+        }
+
+        .contact-details a {
+            color: #1e4a73;
+            text-decoration: none;
+        }
+
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+
+        .social-media-section {
+            margin-top: 2rem;
+        }
+
+        .social-media-section h3 {
+            color: #1e4a73;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-link-large {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .social-link-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .social-link-large.facebook {
+            background: #1877f2;
+        }
+
+        .social-link-large.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c);
+        }
+
+        .social-link-large.twitter {
+            background: #1da1f2;
+        }
+
+        .social-link-large.youtube {
+            background: #ff0000;
+        }
+
+        .social-link-large i {
+            font-size: 1.2rem;
+        }
+
+        .faq-section {
+            padding: 4rem 0;
+            background: #f5f5f5;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .faq-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .faq-item h3 {
+            color: #1e4a73;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-item h3 i {
+            color: #ffeb3b;
+        }
+
+        .faq-item p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="../assets/js/script.js"></script>
+    <script>
+        document.querySelector('.contact-form-main').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simular envio
+            const submitBtn = this.querySelector('.btn-submit-main');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Mensagem enviada com sucesso! Retornaremos o contato em breve.');
+                this.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Máscara para telefone
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
