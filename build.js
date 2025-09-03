@@ -47,5 +47,11 @@ if (fs.existsSync('backend')) {
     console.log('✓ Copiado: backend/');
 }
 
+// Copia diretório api (Vercel Functions)
+if (fs.existsSync('api')) {
+    fs.cpSync('api', 'public/api', { recursive: true });
+    console.log('✓ Copiado: api/');
+}
+
 console.log('\n🚀 Build completed - Static site ready for deployment');
 console.log('📁 Output directory: public/');
