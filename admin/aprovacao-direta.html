@@ -564,6 +564,9 @@
             <div class="section-header">
                 <h2><i class="fas fa-clock"></i> Notícias Pendentes de Aprovação</h2>
                 <div class="header-actions">
+                    <button class="refresh-btn" onclick="openAgendaParlamentar()" style="background: #6f42c1;">
+                        <i class="fas fa-calendar-alt"></i> Agenda Parlamentar
+                    </button>
                     <button class="refresh-btn" onclick="searchAllSites()">
                         <i class="fas fa-globe"></i> Buscar em Todos os Sites
                     </button>
@@ -1027,6 +1030,13 @@
                 showNotification(`🗑️ Site "${site.name}" removido!`, 'success');
                 loadConfiguredSites();
             }
+        }
+        
+        // Função para abrir a agenda parlamentar
+        function openAgendaParlamentar() {
+            const agendaUrl = '../agenda-parlamentar-parana.html';
+            window.open(agendaUrl, '_blank');
+            showNotification('📅 Abrindo Agenda Parlamentar...', 'success');
         }
         
         // Carregar sites configurados na inicialização

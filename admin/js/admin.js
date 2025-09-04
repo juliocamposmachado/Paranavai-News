@@ -49,6 +49,12 @@ class AdminDashboard {
             loginForm.addEventListener('submit', (e) => this.handleLogin(e));
         }
 
+        // Quick Access Button
+        const quickAccessBtn = document.getElementById('quickAccessBtn');
+        if (quickAccessBtn) {
+            quickAccessBtn.addEventListener('click', () => this.handleQuickAccess());
+        }
+
         // Logout
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
@@ -152,6 +158,26 @@ class AdminDashboard {
                 document.getElementById('password').value = '';
             }, 3000);
         }
+    }
+
+    async handleQuickAccess() {
+        // Login automático com as credenciais do Matheus
+        const user = {
+            username: 'Matheus',
+            loginTime: new Date().toISOString(),
+            permissions: ['read', 'approve', 'reject']
+        };
+        
+        sessionStorage.setItem('admin_user', JSON.stringify(user));
+        this.currentUser = user;
+        
+        // Simular loading para dar feedback visual
+        this.showLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 800));
+        this.showLoading(false);
+        
+        this.showToast('Acesso rápido realizado! Bem-vindo, Matheus!', 'success');
+        this.showDashboard();
     }
 
     handleLogout() {
