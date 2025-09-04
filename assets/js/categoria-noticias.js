@@ -44,9 +44,9 @@ class CategoriaNoticias {
                 return cache.noticias;
             }
 
-            // Buscar da API
-            console.log(`🌐 Buscando notícias de ${this.categoria} da API...`);
-            const response = await fetch(`${this.apiUrl}/noticias/${this.categoria}`);
+            // Buscar da API Supabase
+            console.log(`🌐 Buscando notícias aprovadas de ${this.categoria} do Supabase...`);
+            const response = await fetch(`${this.apiUrl}/categoria?categoria=${this.categoria}`);
             const data = await response.json();
 
             if (data.success) {
