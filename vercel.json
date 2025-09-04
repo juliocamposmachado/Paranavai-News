@@ -1,62 +1,58 @@
 {
-  "version": 2,
-  "name": "paranavai-news",
-  "builds": [
-    {
-      "src": "server_admin.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/admin/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg))",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000"
-      },
-      "dest": "/admin/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000"
-      },
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/pages/(.*)",
-      "dest": "/pages/$1"
-    },
-    {
-      "src": "/api/admin/(.*)",
-      "dest": "/server_admin.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/server_admin.js"
-    },
-    {
-      "src": "/admin",
-      "dest": "/server_admin.js"
-    },
-    {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|html))",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000"
-      },
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/server_admin.js"
-    }
-  ],
   "functions": {
-    "server_admin.js": {
+    "api/*.js": {
       "maxDuration": 30
     }
   },
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "regions": ["gru1"]
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/api/admin/(.*)",
+      "destination": "/api/admin-handler.js"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1.js"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
 }

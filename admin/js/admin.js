@@ -205,7 +205,7 @@ class AdminDashboard {
         try {
             // Simular carregamento de conteúdo pendente
             // Em produção, isso seria uma chamada para a API
-            const response = await this.fetchWithFallback('/api/admin/pending');
+            const response = await this.fetchWithFallback('/api/admin-handler/pending');
             
             if (response && response.items) {
                 this.pendingItems = response.items;
@@ -226,7 +226,7 @@ class AdminDashboard {
 
     async loadApprovedContent() {
         try {
-            const response = await this.fetchWithFallback('/api/admin/approved');
+        const response = await this.fetchWithFallback('/api/admin-handler/approved');
             
             if (response && response.items) {
                 this.approvedItems = response.items;
@@ -245,7 +245,7 @@ class AdminDashboard {
 
     async loadRejectedContent() {
         try {
-            const response = await this.fetchWithFallback('/api/admin/rejected');
+            const response = await this.fetchWithFallback('/api/admin-handler/rejected');
             
             if (response && response.items) {
                 this.rejectedItems = response.items;
@@ -444,7 +444,7 @@ class AdminDashboard {
             this.showLoading(true);
             
             // Simular aprovação (em produção seria uma chamada à API)
-            const response = await this.simulateApiCall('/api/admin/approve', { itemId });
+            const response = await this.simulateApiCall('/api/admin-handler/approve/' + itemId, { itemId });
             
             if (response.success) {
                 // Mover item de pendente para aprovado
@@ -472,7 +472,7 @@ class AdminDashboard {
         try {
             this.showLoading(true);
             
-            const response = await this.simulateApiCall('/api/admin/reject', { itemId, reason });
+            const response = await this.simulateApiCall('/api/admin-handler/reject/' + itemId, { itemId, reason });
             
             if (response.success) {
                 // Mover item de pendente para rejeitado
