@@ -218,6 +218,9 @@ class AdminDashboard {
             case 'stats':
                 await this.loadStatistics();
                 break;
+            case 'agenda':
+                await this.loadAgenda();
+                break;
         }
         
         this.showLoading(false);
@@ -530,6 +533,49 @@ class AdminDashboard {
         } catch (error) {
             console.error('Erro ao rejeitar item:', error);
             this.showToast('Erro ao rejeitar item', 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    // ===== SEÇÃO AGENDA PARLAMENTAR =====
+    async loadAgenda() {
+        try {
+            this.bindAgendaEvents();
+            this.showToast('Seção Agenda Parlamentar carregada com sucesso!', 'success');
+        } catch (error) {
+            console.error('Erro ao carregar agenda:', error);
+        }
+    }
+
+    bindAgendaEvents() {
+        // Abrir agenda completa button
+        const openAgendaBtn = document.getElementById('openAgendaBtn');
+        if (openAgendaBtn) {
+            openAgendaBtn.addEventListener('click', () => this.openFullAgenda());
+        }
+
+        // Refresh agenda button
+        const refreshAgendaBtn = document.getElementById('refreshAgendaBtn');
+        if (refreshAgendaBtn) {
+            refreshAgendaBtn.addEventListener('click', () => this.refreshAgenda());
+        }
+    }
+
+    openFullAgenda() {
+        // Abrir a página da agenda parlamentar em nova aba
+        window.open('../agenda-parlamentar-parana.html', '_blank');
+        this.showToast('Abrindo Agenda Parlamentar...', 'info');
+    }
+
+    async refreshAgenda() {
+        try {
+            this.showLoading(true);
+            // Simular refresh da agenda
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            this.showToast('Dados da agenda atualizados!', 'success');
+        } catch (error) {
+            this.showToast('Erro ao atualizar agenda', 'error');
         } finally {
             this.showLoading(false);
         }
