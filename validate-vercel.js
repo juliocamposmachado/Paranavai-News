@@ -91,6 +91,19 @@ allValid &= checkFile('api/portais.js', 'API de portais');
 allValid &= checkFile('api/contacts.js', 'API de contatos');
 allValid &= checkFile('api/estatisticas.js', 'API de estatísticas');
 
+// Validar APIs do Supabase
+log('\n🚀 Validando APIs do Supabase...', colors.blue);
+allValid &= checkFile('api/noticias-supabase.js', 'API de notícias (Supabase)');
+allValid &= checkFile('api/contacts-supabase.js', 'API de contatos (Supabase)');
+allValid &= checkFile('utils/supabase.js', 'Cliente Supabase');
+
+// Verificar se .env existe (localmente)
+if (fs.existsSync('.env')) {
+    log('✅ Arquivo .env encontrado (local)', colors.green);
+} else {
+    log('⚠️ Arquivo .env não encontrado (OK em produção)', colors.yellow);
+}
+
 // Validar HTMLs principais
 log('\n📄 Validando estrutura HTML...', colors.blue);
 allValid &= validateHTML('index.html', 'Página principal');

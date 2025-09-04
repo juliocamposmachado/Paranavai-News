@@ -134,10 +134,8 @@ async function scrapearBingNews(portal) {
                         $el.find('.description').first().text().trim() ||
                         $el.find('p').first().text().trim();
             
-            // Imagem
-            let imagem = $el.find('.newsimg img').first().attr('src') ||
-                        $el.find('.img img').first().attr('src') ||
-                        $el.find('img').first().attr('src');
+            // Remover imagens para evitar erros
+            let imagem = null;
             
             // Data
             let data = $el.find('.source .timestamp').first().text().trim() ||

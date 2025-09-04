@@ -156,3 +156,9 @@ _site/
 # Misc
 *.tgz
 *.tar.gz
+
+# Arquivos de teste (não versionar)
+test-*.js
+*.test.js
+database-schema.sql
+SUPABASE_SETUP.md
