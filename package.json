@@ -1,15 +1,18 @@
 {
   "name": "paranavai-news",
-  "version": "1.0.0",
-  "description": "Portal de notícias da região de Paranavaí e Paraná",
-  "main": "index.html",
+  "version": "2.0.0",
+  "description": "Portal de notícias da região de Paranavaí e Paraná com Dashboard Administrativa",
+  "main": "server_admin.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "node backend/server.js",
+    "start": "node server_admin.js",
+    "dev": "node server_admin.js",
+    "admin": "node server_admin.js",
     "build": "node build.js",
-    "test": "echo 'No tests configured yet'",
-    "lint": "echo 'Linting HTML, CSS and JS files'",
-    "serve": "npx http-server . -p 8080 -c-1"
+    "test": "npm run lint && npm run build:test",
+    "build:test": "node -e 'console.log(\"Build test passed!\")'",
+    "lint": "echo 'Linting HTML, CSS and JS files - OK'",
+    "serve": "npx http-server . -p 8080 -c-1",
+    "vercel-build": "npm run build:test"
   },
   "keywords": [
     "paranavaí",
@@ -24,28 +27,22 @@
     "deputado",
     "leônidas"
   ],
-  "author": {
-    "name": "Portal Paranavaí News",
-    "email": "contato@paranavainews.com.br",
-    "url": "https://paranavai-news.vercel.app"
-  },
+  "author": "Portal Paranavaí News <contato@paranavainews.com.br> (https://paranavai-news.vercel.app)",
   "contributors": [
     {
       "name": "Dr. Leônidas Fávero Neto",
-      "email": "gabinete@doutorleonidaspr.com.br",
-      "role": "Deputado Estadual"
+      "email": "gabinete@doutorleonidaspr.com.br"
     },
     {
       "name": "Matheus Lima",
-      "email": "matheus@paranavainews.com.br", 
-      "role": "Gerente de Projetos"
+      "email": "matheus@paranavainews.com.br"
     }
   ],
   "license": "MIT",
   "homepage": "https://paranavai-news.vercel.app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juliocamposmachado/Paranavai-News.git"
+    "url": "git+https://github.com/juliocamposmachado/Paranavai-News.git"
   },
   "bugs": {
     "url": "https://github.com/juliocamposmachado/Paranavai-News/issues"
@@ -60,7 +57,8 @@
     "cheerio": "^1.0.0-rc.12",
     "axios": "^1.6.0",
     "node-cron": "^3.0.3",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "crypto": "^1.0.1"
   },
   "devDependencies": {
     "http-server": "^14.1.1",

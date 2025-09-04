@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativa - Portal Paranavaí News</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <img src="../assets/images/matheus.jpg" alt="Portal Paranavaí" class="login-logo">
+                <h1>Dashboard Administrativa</h1>
+                <p>Portal Paranavaí News</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Usuário
+                    </label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Senha
+                    </label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Entrar
+                </button>
+            </form>
+            <div id="loginError" class="login-error" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                Usuário ou senha incorretos
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div id="dashboardScreen" class="dashboard-screen" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1><i class="fas fa-tachometer-alt"></i> Dashboard Administrativa</h1>
+                <span class="subtitle">Gerenciamento de Conteúdo</span>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <img src="../assets/images/matheus.jpg" alt="Matheus" class="user-avatar">
+                    <span>Bem-vindo, Matheus</span>
+                </div>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <button class="nav-btn active" data-section="pending">
+                <i class="fas fa-clock"></i>
+                <span>Pendentes</span>
+                <span class="nav-count" id="pendingCount">0</span>
+            </button>
+            <button class="nav-btn" data-section="approved">
+                <i class="fas fa-check-circle"></i>
+                <span>Aprovados</span>
+                <span class="nav-count" id="approvedCount">0</span>
+            </button>
+            <button class="nav-btn" data-section="rejected">
+                <i class="fas fa-times-circle"></i>
+                <span>Rejeitados</span>
+                <span class="nav-count" id="rejectedCount">0</span>
+            </button>
+            <button class="nav-btn" data-section="stats">
+                <i class="fas fa-chart-bar"></i>
+                <span>Estatísticas</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Seção Pendentes -->
+            <section id="pendingSection" class="content-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-clock"></i> Conteúdo Pendente de Aprovação</h2>
+                    <button id="refreshBtn" class="refresh-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        Atualizar
+                    </button>
+                </div>
+                <div id="pendingContent" class="content-grid">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Seção Aprovados -->
+            <section id="approvedSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-check-circle"></i> Conteúdo Aprovado</h2>
+                    <div class="filter-controls">
+                        <select id="approvedFilter">
+                            <option value="all">Todos</option>
+                            <option value="today">Hoje</option>
+                            <option value="week">Esta Semana</option>
+                            <option value="month">Este Mês</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="approvedContent" class="content-grid">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Seção Rejeitados -->
+            <section id="rejectedSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-times-circle"></i> Conteúdo Rejeitado</h2>
+                </div>
+                <div id="rejectedContent" class="content-grid">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Seção Estatísticas -->
+            <section id="statsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> Estatísticas do Sistema</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalNews">0</h3>
+                            <p>Total de Notícias</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalApproved">0</h3>
+                            <p>Aprovadas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRejected">0</h3>
+                            <p>Rejeitadas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="approvalRate">0%</h3>
+                            <p>Taxa de Aprovação</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-chart">
+                    <h3>Atividade dos Últimos 7 Dias</h3>
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de Visualização -->
+    <div id="previewModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Visualizar Conteúdo</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="previewContent">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="approveBtn" class="btn btn-approve">
+                    <i class="fas fa-check"></i>
+                    Aprovar
+                </button>
+                <button id="rejectBtn" class="btn btn-reject">
+                    <i class="fas fa-times"></i>
+                    Rejeitar
+                </button>
+                <button class="btn btn-secondary modal-close">
+                    <i class="fas fa-arrow-left"></i>
+                    Voltar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
