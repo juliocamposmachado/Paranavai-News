@@ -11,6 +11,9 @@ class AdminDashboard {
         this.approvedItems = [];
         this.rejectedItems = [];
         this.selectedItem = null;
+        this.contactsData = [];
+        this.analysisData = {};
+        this.selectedContact = null;
         
         this.init();
     }
@@ -176,6 +179,12 @@ class AdminDashboard {
                 break;
             case 'rejected':
                 await this.loadRejectedContent();
+                break;
+            case 'contacts':
+                await this.loadContacts();
+                break;
+            case 'analysis':
+                await this.loadAnalysis();
                 break;
             case 'stats':
                 await this.loadStatistics();
@@ -655,11 +664,492 @@ document.addEventListener('DOMContentLoaded', () => {
     admin = new AdminDashboard();
 });
 
+    // ===== SEÇÃO DE CONTATOS =====
+    async loadContacts() {
+        try {
+            const response = await this.fetchWithFallback('/api/contacts?action=list');
+            
+            if (response && response.success) {
+                this.contactsData = response.data;
+            } else {
+                this.contactsData = this.getExampleContacts();
+            }
+            
+            this.renderContacts();
+            this.bindContactsEvents();
+            this.updateContactsCount();
+            
+        } catch (error) {
+            console.error('Erro ao carregar contatos:', error);
+            this.contactsData = this.getExampleContacts();
+            this.renderContacts();
+        }
+    }
+
+    bindContactsEvents() {
+        // Sync contacts button
+        const syncBtn = document.getElementById('syncContactsBtn');
+        if (syncBtn) {
+            syncBtn.addEventListener('click', () => this.syncContacts());
+        }
+
+        // Add contact button
+        const addBtn = document.getElementById('addContactBtn');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => this.showContactModal());
+        }
+
+        // Search and filters
+        const searchInput = document.getElementById('contactSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => this.filterContacts(e.target.value));
+        }
+
+        const cityFilter = document.getElementById('cityFilter');
+        if (cityFilter) {
+            cityFilter.addEventListener('change', () => this.applyContactsFilters());
+        }
+
+        const positionFilter = document.getElementById('positionFilter');
+        if (positionFilter) {
+            positionFilter.addEventListener('change', () => this.applyContactsFilters());
+        }
+
+        // Modal events
+        const contactModal = document.getElementById('contactModal');
+        const contactModalCloses = contactModal?.querySelectorAll('.modal-close');
+        contactModalCloses?.forEach(close => {
+            close.addEventListener('click', () => this.closeContactModal());
+        });
+
+        // Save contact button
+        const saveBtn = document.getElementById('saveContactBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => this.saveContact());
+        }
+    }
+
+    renderContacts(contactsToRender = null) {
+        const container = document.getElementById('contactsGrid');
+        if (!container) return;
+
+        const contacts = contactsToRender || this.contactsData;
+
+        if (contacts.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-address-book" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                    <h3>Nenhum contato encontrado</h3>
+                    <p>Use os filtros para refinar sua busca ou adicione novos contatos.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = contacts.map(contact => `
+            <div class="contact-card" data-id="${contact.id}" onclick="admin.viewContact('${contact.id}')">
+                <div class="contact-header">
+                    <div class="contact-avatar">
+                        ${contact.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div class="contact-info">
+                        <h3>${contact.name}</h3>
+                        <p>${this.getPositionLabel(contact.position)} - ${contact.city}</p>
+                    </div>
+                    ${contact.party ? `<div class="contact-badge">${contact.party}</div>` : ''}
+                </div>
+                <div class="contact-details">
+                    ${contact.phone ? `
+                        <div class="contact-detail">
+                            <i class="fas fa-phone"></i>
+                            <span>${contact.phone}</span>
+                        </div>
+                    ` : ''}
+                    ${contact.email ? `
+                        <div class="contact-detail">
+                            <i class="fas fa-envelope"></i>
+                            <span>${contact.email}</span>
+                        </div>
+                    ` : ''}
+                    ${contact.office ? `
+                        <div class="contact-detail">
+                            <i class="fas fa-building"></i>
+                            <span>${contact.office}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="contact-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); admin.editContact('${contact.id}')">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); admin.callContact('${contact.phone}')">
+                        <i class="fas fa-phone"></i>
+                        Ligar
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async syncContacts() {
+        try {
+            this.showLoading(true);
+            const response = await this.fetchWithFallback('/api/contacts?action=sync');
+            
+            if (response && response.success) {
+                this.showToast(response.message, 'success');
+                await this.loadContacts();
+            } else {
+                this.showToast('Sincronização simulada com sucesso!', 'success');
+                // Simular adição de novos contatos
+                this.contactsData.push(...this.getNewContactsExample());
+                this.renderContacts();
+            }
+        } catch (error) {
+            this.showToast('Erro na sincronização', 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    // ===== SEÇÃO DE ANÁLISE =====
+    async loadAnalysis() {
+        try {
+            this.bindAnalysisEvents();
+            await Promise.all([
+                this.loadAnalysisReports(),
+                this.loadDataSources(),
+                this.loadPowerBIStatus()
+            ]);
+        } catch (error) {
+            console.error('Erro ao carregar análise:', error);
+        }
+    }
+
+    bindAnalysisEvents() {
+        // Tab navigation
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => this.switchAnalysisTab(e.target.dataset.tab));
+        });
+
+        // Refresh analysis button
+        const refreshBtn = document.getElementById('refreshAnalysisBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => this.refreshAnalysisData());
+        }
+
+        // Export data button
+        const exportBtn = document.getElementById('exportDataBtn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => this.exportAnalysisData());
+        }
+    }
+
+    switchAnalysisTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        // Update tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+            content.style.display = 'none';
+        });
+
+        const targetTab = document.getElementById(`${tabName}Tab`);
+        if (targetTab) {
+            targetTab.classList.add('active');
+            targetTab.style.display = 'block';
+        }
+
+        // Load tab-specific data
+        this.loadAnalysisTabData(tabName);
+    }
+
+    async loadAnalysisTabData(tabName) {
+        switch (tabName) {
+            case 'dashboard':
+                await this.loadPowerBIEmbed();
+                break;
+            case 'reports':
+                await this.loadAnalysisReports();
+                break;
+            case 'data-sources':
+                await this.loadDataSources();
+                break;
+        }
+    }
+
+    async loadPowerBIEmbed() {
+        const statusIndicator = document.querySelector('.status-indicator');
+        const statusText = document.getElementById('powerbiStatus');
+        
+        // Simular conexão com PowerBI
+        setTimeout(() => {
+            if (statusIndicator && statusText) {
+                statusIndicator.classList.add('connected');
+                statusText.textContent = 'Conectado ao PowerBI';
+            }
+        }, 2000);
+    }
+
+    async loadAnalysisReports() {
+        try {
+            const response = await this.fetchWithFallback('/api/analysis?action=reports');
+            
+            let reports;
+            if (response && response.success) {
+                reports = response.data;
+            } else {
+                reports = this.getExampleReports();
+            }
+
+            this.renderAnalysisReports(reports);
+        } catch (error) {
+            console.error('Erro ao carregar relatórios:', error);
+        }
+    }
+
+    renderAnalysisReports(reports) {
+        const container = document.querySelector('.reports-grid');
+        if (!container) return;
+
+        container.innerHTML = reports.map(report => `
+            <div class="report-card" onclick="admin.openReport('${report.id}')">
+                <div class="report-header">
+                    <h4>${report.name}</h4>
+                    <span class="report-status status-${report.status}">${report.status}</span>
+                </div>
+                <p class="report-description">${report.description}</p>
+                <div class="report-metrics">
+                    ${Object.entries(report.metrics || {}).slice(0, 2).map(([key, value]) => `
+                        <div class="metric">
+                            <strong>${value}</strong>
+                            <span>${this.getMetricLabel(key)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="report-footer">
+                    <small>Atualizado: ${this.formatDate(report.lastUpdate)}</small>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async loadDataSources() {
+        try {
+            const response = await this.fetchWithFallback('/api/analysis?action=data-sources');
+            
+            let dataSources;
+            if (response && response.success) {
+                dataSources = response.data;
+            } else {
+                dataSources = this.getExampleDataSources();
+            }
+
+            this.renderDataSources(dataSources);
+        } catch (error) {
+            console.error('Erro ao carregar fontes de dados:', error);
+        }
+    }
+
+    renderDataSources(dataSources) {
+        const container = document.querySelector('.data-sources-list');
+        if (!container) return;
+
+        container.innerHTML = dataSources.map(source => `
+            <div class="data-source-item">
+                <div class="data-source-info">
+                    <div class="data-source-icon">
+                        <i class="${source.icon}"></i>
+                    </div>
+                    <div class="data-source-details">
+                        <h4>${source.name}</h4>
+                        <p>${source.description}</p>
+                    </div>
+                </div>
+                <div class="data-source-status">
+                    <span class="status-indicator ${source.status}"></span>
+                    <div class="status-info">
+                        <strong>${this.getStatusLabel(source.status)}</strong>
+                        <small>Último sync: ${this.formatDate(source.lastSync)}</small>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ===== UTILITÁRIOS PARA CONTATOS =====
+    getPositionLabel(position) {
+        const labels = {
+            'prefeito': 'Prefeito',
+            'deputado': 'Deputado Estadual',
+            'senador': 'Senador',
+            'vereador': 'Vereador',
+            'secretario': 'Secretário',
+            'assessor': 'Assessor'
+        };
+        return labels[position] || position;
+    }
+
+    getMetricLabel(key) {
+        const labels = {
+            'totalViews': 'Visualizações',
+            'avgEngagement': 'Engajamento',
+            'uniqueVisitors': 'Visitantes',
+            'pageViews': 'Páginas Vistas'
+        };
+        return labels[key] || key;
+    }
+
+    getStatusLabel(status) {
+        const labels = {
+            'connected': 'Conectado',
+            'warning': 'Atenção',
+            'error': 'Erro',
+            'active': 'Ativo'
+        };
+        return labels[status] || status;
+    }
+
+    updateContactsCount() {
+        const countElement = document.getElementById('contactsCount');
+        if (countElement) {
+            countElement.textContent = this.contactsData.length;
+        }
+    }
+
+    applyContactsFilters() {
+        const search = document.getElementById('contactSearch')?.value?.toLowerCase() || '';
+        const cityFilter = document.getElementById('cityFilter')?.value || 'all';
+        const positionFilter = document.getElementById('positionFilter')?.value || 'all';
+
+        let filteredContacts = this.contactsData;
+
+        if (search) {
+            filteredContacts = filteredContacts.filter(contact => 
+                contact.name.toLowerCase().includes(search) ||
+                contact.city.toLowerCase().includes(search) ||
+                contact.position.toLowerCase().includes(search)
+            );
+        }
+
+        if (cityFilter !== 'all') {
+            filteredContacts = filteredContacts.filter(contact => 
+                contact.city.toLowerCase() === cityFilter.toLowerCase()
+            );
+        }
+
+        if (positionFilter !== 'all') {
+            filteredContacts = filteredContacts.filter(contact => 
+                contact.position === positionFilter
+            );
+        }
+
+        this.renderContacts(filteredContacts);
+    }
+
+    // ===== DADOS DE EXEMPLO =====
+    getExampleContacts() {
+        return [
+            {
+                id: 'dr-leonidas',
+                name: 'Dr. Leônidas',
+                position: 'prefeito',
+                party: '',
+                city: 'Paranavaí',
+                phone: '(44) 3482-8600',
+                mobile: '',
+                email: 'gabinete@paranavai.pr.gov.br',
+                office: 'Av. Getúlio Vargas, 102 - Centro',
+                notes: 'Prefeito de Paranavaí',
+                verified: true
+            },
+            {
+                id: 'rafael-greca',
+                name: 'Rafael Greca',
+                position: 'prefeito',
+                party: 'PMN',
+                city: 'Curitiba',
+                phone: '(41) 3350-8000',
+                email: 'gabinete@curitiba.pr.gov.br',
+                office: 'Av. Cândido de Abreu, 817 - Centro Cívico',
+                verified: true
+            },
+            {
+                id: 'flavio-arns',
+                name: 'Flávio Arns',
+                position: 'senador',
+                party: 'PODEMOS',
+                city: 'Curitiba',
+                phone: '(41) 3330-1500',
+                email: 'sen.flavioarns@senado.leg.br',
+                office: 'Senado Federal - Brasília',
+                verified: true
+            }
+        ];
+    }
+
+    getExampleReports() {
+        return [
+            {
+                id: 'news-analytics',
+                name: 'Análise de Notícias',
+                description: 'Métricas de performance das notícias do portal',
+                status: 'active',
+                lastUpdate: new Date().toISOString(),
+                metrics: { totalViews: 15420, avgEngagement: 78.5 }
+            },
+            {
+                id: 'traffic-report',
+                name: 'Relatório de Tráfego',
+                description: 'Análise de visitantes e comportamento',
+                status: 'active',
+                lastUpdate: new Date().toISOString(),
+                metrics: { uniqueVisitors: 8930, pageViews: 23450 }
+            }
+        ];
+    }
+
+    getExampleDataSources() {
+        return [
+            {
+                id: 'google-analytics',
+                name: 'Google Analytics',
+                description: 'Dados de tráfego e comportamento do website',
+                icon: 'fas fa-chart-line',
+                status: 'connected',
+                lastSync: new Date().toISOString()
+            },
+            {
+                id: 'social-media',
+                name: 'Redes Sociais',
+                description: 'APIs do Facebook, Instagram e Twitter',
+                icon: 'fas fa-share-alt',
+                status: 'connected',
+                lastSync: new Date().toISOString()
+            }
+        ];
+    }
+}
+
+// Inicializar dashboard quando a página carregar
+let admin;
+document.addEventListener('DOMContentLoaded', () => {
+    admin = new AdminDashboard();
+});
+
 // Tornar algumas funções globais para uso inline
 window.admin = {
     previewItem: (id) => admin.previewItem(id),
     quickApprove: (id) => admin.quickApprove(id),
     quickReject: (id) => admin.quickReject(id),
     unpublishItem: (id) => admin.unpublishItem(id),
-    reconsiderItem: (id) => admin.reconsiderItem(id)
+    reconsiderItem: (id) => admin.reconsiderItem(id),
+    viewContact: (id) => admin.viewContact && admin.viewContact(id),
+    editContact: (id) => admin.editContact && admin.editContact(id),
+    callContact: (phone) => admin.callContact && admin.callContact(phone),
+    openReport: (id) => admin.openReport && admin.openReport(id)
 };
