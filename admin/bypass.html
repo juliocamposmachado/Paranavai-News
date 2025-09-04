@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bypass Login - Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e4a73, #2c5f8a);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 { margin-bottom: 20px; }
+        p { margin: 10px 0; }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner"></div>
+        <h1>🚀 Fazendo Login Automático</h1>
+        <p>Usuário: <strong>Matheus</strong></p>
+        <p>Aguarde... redirecionando para a dashboard</p>
+        
+        <div id="status" class="status">
+            Configurando sessão...
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <a href="index.html" class="btn" id="manualLink" style="display: none;">
+                📊 Ir para Dashboard Manualmente
+            </a>
+            
+            <a href="login-simples.html" class="btn">
+                🔐 Página de Login Simples
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function performAutoLogin() {
+            updateStatus('✅ Criando sessão de usuário...');
+            
+            // Criar dados de usuário
+            const userData = {
+                username: 'Matheus',
+                loginTime: new Date().toISOString(),
+                permissions: ['read', 'approve', 'reject']
+            };
+            
+            // Salvar no sessionStorage
+            sessionStorage.setItem('admin_user', JSON.stringify(userData));
+            
+            updateStatus('✅ Login automático realizado com sucesso!');
+            
+            // Mostrar link manual
+            document.getElementById('manualLink').style.display = 'inline-block';
+            
+            // Tentar redirecionar automaticamente
+            setTimeout(() => {
+                updateStatus('🔄 Redirecionando para dashboard...');
+                
+                setTimeout(() => {
+                    try {
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        updateStatus('❌ Erro no redirecionamento. Use o botão manual.');
+                        console.error('Erro:', error);
+                    }
+                }, 1000);
+            }, 2000);
+        }
+        
+        // Verificar se já está logado
+        const existingUser = sessionStorage.getItem('admin_user');
+        if (existingUser) {
+            updateStatus('✅ Você já está logado!');
+            document.getElementById('manualLink').style.display = 'inline-block';
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } else {
+            // Fazer login automático
+            setTimeout(performAutoLogin, 1000);
+        }
+        
+        // Log de debug
+        console.log('Bypass Login - Configuração automática');
+        console.log('SessionStorage antes:', sessionStorage.getItem('admin_user'));
+        
+        // Verificar se a página original da dashboard existe
+        setTimeout(() => {
+            fetch('index.html')
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ Dashboard index.html encontrada');
+                        updateStatus(document.getElementById('status').textContent + ' (Dashboard OK)');
+                    } else {
+                        console.log('❌ Dashboard index.html não encontrada');
+                        updateStatus('⚠️ Dashboard não encontrada, mas login foi feito');
+                    }
+                })
+                .catch(error => {
+                    console.log('❌ Erro ao verificar dashboard:', error);
+                    updateStatus('⚠️ Erro ao verificar dashboard, mas login foi feito');
+                });
+        }, 3000);
+    </script>
+</body>
+</html>

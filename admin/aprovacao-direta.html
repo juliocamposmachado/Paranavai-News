@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprovação de Notícias - Portal Paranavaí</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e4a73, #2c5f8a);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e4a73;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e4a73;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .pending-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(90deg, #1e4a73, #2c5f8a);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .refresh-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .news-grid {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .news-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .news-item:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+            border-color: #1e4a73;
+        }
+
+        .news-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff9800;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .news-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e4a73;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            padding-right: 80px;
+        }
+
+        .news-excerpt {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .news-source {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .news-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-preview {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-preview:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .news-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        /* Estilos para seção de adicionar sites */
+        .add-site-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            background: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .add-site-form {
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input {
+            padding: 12px 15px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1e4a73;
+            box-shadow: 0 0 0 3px rgba(30, 74, 115, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .configured-sites {
+            padding: 20px 30px;
+        }
+
+        .site-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .site-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-color: #1e4a73;
+        }
+
+        .site-info h4 {
+            margin: 0 0 5px 0;
+            color: #1e4a73;
+            font-size: 16px;
+        }
+
+        .site-info p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .site-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">PN</div>
+                <div>
+                    <h1>Portal Paranavaí News</h1>
+                    <p>Sistema de Aprovação de Notícias</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <i class="fas fa-user-circle" style="font-size: 24px;"></i>
+                <span>Admin - Matheus</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Estatísticas -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="pendingCount">0</div>
+                <div class="stat-label">Pendentes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="approvedCount">0</div>
+                <div class="stat-label">Aprovadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="rejectedCount">0</div>
+                <div class="stat-label">Rejeitadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+
+        <!-- Seção Adicionar Site -->
+        <div class="add-site-section">
+            <div class="section-header">
+                <h2><i class="fas fa-plus-circle"></i> Adicionar Site de Notícias</h2>
+                <button class="toggle-btn" onclick="toggleAddSiteForm()">
+                    <i class="fas fa-cog"></i> Configurar Sites
+                </button>
+            </div>
+            <div class="add-site-form" id="addSiteForm" style="display: none;">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="siteName">Nome do Site:</label>
+                        <input type="text" id="siteName" placeholder="Ex: G1 Paraná" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="siteUrl">URL do Site:</label>
+                        <input type="url" id="siteUrl" placeholder="https://g1.globo.com/pr/parana/" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="searchUrl">URL de Busca (com {TERMO}):</label>
+                        <input type="url" id="searchUrl" placeholder="https://g1.globo.com/busca/?q={TERMO}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="searchTerm">Termo de Busca:</label>
+                        <input type="text" id="searchTerm" placeholder="Paranavaí" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="action-btn btn-approve" onclick="addCustomSite()">
+                        <i class="fas fa-plus"></i> Adicionar Site
+                    </button>
+                    <button class="action-btn btn-preview" onclick="testSiteSearch()">
+                        <i class="fas fa-search"></i> Buscar Notícias
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lista de Sites Configurados -->
+            <div class="configured-sites" id="configuredSites">
+                <!-- Sites serão listados aqui -->
+            </div>
+        </div>
+
+        <!-- Seção de Notícias Pendentes -->
+        <div class="pending-section">
+            <div class="section-header">
+                <h2><i class="fas fa-clock"></i> Notícias Pendentes de Aprovação</h2>
+                <div class="header-actions">
+                    <button class="refresh-btn" onclick="searchAllSites()">
+                        <i class="fas fa-globe"></i> Buscar em Todos os Sites
+                    </button>
+                    <button class="refresh-btn" onclick="loadPendingNews()">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                </div>
+            </div>
+            <div class="news-grid" id="newsGrid">
+                <!-- Notícias serão carregadas aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Preview -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Visualizar Notícia</h3>
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificação -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Dados de exemplo de notícias pendentes
+        let pendingNews = [
+            {
+                id: 1,
+                title: "Nova investimento em infraestrutura para Paranavaí",
+                excerpt: "Governo do Estado anuncia R$ 15 milhões em recursos para melhorias na infraestrutura urbana da cidade, incluindo pavimentação de 50 ruas e ampliação da rede de saneamento básico.",
+                source: "Bem Paraná",
+                date: "2024-01-15T14:30:00Z",
+                link: "https://www.bemparana.com.br/noticia/exemplo1",
+                image: "https://via.placeholder.com/400x250/1e4a73/ffffff?text=Infraestrutura"
+            },
+            {
+                id: 2,
+                title: "Deputado Leônidas apresenta projeto para fortalecer agronegócio",
+                excerpt: "Nova proposta de lei visa beneficiar pequenos e médios produtores rurais da região com linhas de crédito especiais e redução de impostos para equipamentos agrícolas.",
+                source: "Portal Regional",
+                date: "2024-01-15T11:15:00Z",
+                link: "https://www.exemplo.com/noticia2",
+                image: "https://via.placeholder.com/400x250/2e7d32/ffffff?text=Agronegócio"
+            },
+            {
+                id: 3,
+                title: "Campanha de vacinação ampliada na região noroeste",
+                excerpt: "Secretaria Estadual de Saúde anuncia ampliação dos pontos de vacinação contra gripe e COVID-19 em Paranavaí e cidades vizinhas, com meta de atingir 80% da população.",
+                source: "Saúde Paraná",
+                date: "2024-01-15T09:45:00Z",
+                link: "https://www.exemplo.com/noticia3",
+                image: "https://via.placeholder.com/400x250/d32f2f/ffffff?text=Saúde"
+            },
+            {
+                id: 4,
+                title: "Festival de Turismo Rural movimenta economia local",
+                excerpt: "Evento realizado nos fins de semana de janeiro atrai milhares de visitantes para propriedades rurais da região, gerando renda extra para produtores e impulsionando o turismo.",
+                source: "Turismo PR",
+                date: "2024-01-14T16:20:00Z",
+                link: "https://www.exemplo.com/noticia4",
+                image: "https://via.placeholder.com/400x250/ff9800/ffffff?text=Turismo"
+            }
+        ];
+
+        let approvedNews = [];
+        let rejectedNews = [];
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('pendingCount').textContent = pendingNews.length;
+            document.getElementById('approvedCount').textContent = approvedNews.length;
+            document.getElementById('rejectedCount').textContent = rejectedNews.length;
+            document.getElementById('totalCount').textContent = pendingNews.length + approvedNews.length + rejectedNews.length;
+        }
+
+        function loadPendingNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            
+            if (pendingNews.length === 0) {
+                newsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Nenhuma notícia pendente!</h3>
+                        <p>Todas as notícias foram processadas.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            newsGrid.innerHTML = pendingNews.map(news => `
+                <div class="news-item" data-id="${news.id}">
+                    <div class="news-status">PENDENTE</div>
+                    <h3 class="news-title">${news.title}</h3>
+                    <p class="news-excerpt">${news.excerpt}</p>
+                    <div class="news-meta">
+                        <span class="news-source">${news.source}</span>
+                        <span>${formatDate(news.date)}</span>
+                    </div>
+                    <div class="news-actions">
+                        <button class="action-btn btn-preview" onclick="previewNews(${news.id})">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="action-btn btn-approve" onclick="approveNews(${news.id})">
+                            <i class="fas fa-check"></i> Aprovar
+                        </button>
+                        <button class="action-btn btn-reject" onclick="rejectNews(${news.id})">
+                            <i class="fas fa-times"></i> Rejeitar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            updateStats();
+        }
+
+        function previewNews(id) {
+            const news = pendingNews.find(n => n.id === id);
+            if (!news) return;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <h2 style="color: #1e4a73; margin-bottom: 15px;">${news.title}</h2>
+                <div style="margin-bottom: 15px;">
+                    <strong>Fonte:</strong> ${news.source} | 
+                    <strong>Data:</strong> ${formatDate(news.date)}
+                </div>
+                <img src="${news.image}" alt="${news.title}" class="news-image">
+                <p style="line-height: 1.6; margin: 15px 0;">${news.excerpt}</p>
+                <div style="margin-top: 20px;">
+                    <strong>Link original:</strong> 
+                    <a href="${news.link}" target="_blank" style="color: #1e4a73;">${news.link}</a>
+                </div>
+                <div style="margin-top: 30px; display: flex; gap: 10px;">
+                    <button class="action-btn btn-approve" onclick="approveNews(${news.id}); closeModal();" style="flex: 1;">
+                        <i class="fas fa-check"></i> Aprovar
+                    </button>
+                    <button class="action-btn btn-reject" onclick="rejectNews(${news.id}); closeModal();" style="flex: 1;">
+                        <i class="fas fa-times"></i> Rejeitar
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('previewModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('previewModal').style.display = 'none';
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function approveNews(id) {
+            const newsIndex = pendingNews.findIndex(n => n.id === id);
+            if (newsIndex === -1) return;
+
+            const news = pendingNews.splice(newsIndex, 1)[0];
+            news.approvedAt = new Date().toISOString();
+            news.approvedBy = 'Matheus';
+            approvedNews.unshift(news);
+            
+            showNotification(`✅ Notícia "${news.title.substring(0, 50)}..." foi aprovada!`, 'success');
+            loadPendingNews();
+        }
+
+        function rejectNews(id) {
+            const reason = prompt('Motivo da rejeição (opcional):');
+            
+            const newsIndex = pendingNews.findIndex(n => n.id === id);
+            if (newsIndex === -1) return;
+
+            const news = pendingNews.splice(newsIndex, 1)[0];
+            news.rejectedAt = new Date().toISOString();
+            news.rejectedBy = 'Matheus';
+            news.rejectionReason = reason || 'Sem motivo especificado';
+            rejectedNews.unshift(news);
+            
+            showNotification(`❌ Notícia "${news.title.substring(0, 50)}..." foi rejeitada!`, 'error');
+            loadPendingNews();
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('previewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Carregar notícias ao iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPendingNews();
+            
+            // Simular chegada de novas notícias periodicamente
+            setInterval(() => {
+                if (pendingNews.length === 0 && Math.random() > 0.7) {
+                    // Adicionar nova notícia de exemplo
+                    const newNews = {
+                        id: Date.now(),
+                        title: "Nova notícia chegou ao sistema",
+                        excerpt: "Esta é uma notícia de exemplo que chegou automaticamente ao sistema e precisa ser aprovada pelo administrador.",
+                        source: "Sistema Automático",
+                        date: new Date().toISOString(),
+                        link: "https://www.exemplo.com/nova-noticia",
+                        image: "https://via.placeholder.com/400x250/6c757d/ffffff?text=Nova+Notícia"
+                    };
+                    
+                    pendingNews.push(newNews);
+                    loadPendingNews();
+                    showNotification('📰 Nova notícia disponível para aprovação!', 'success');
+                }
+            }, 10000); // A cada 10 segundos
+        });
+
+        // ===== GERENCIAMENTO DE SITES PERSONALIZADOS =====
+        
+        // Lista de sites configurados (armazenada no localStorage)
+        let customSites = JSON.parse(localStorage.getItem('customSites')) || [
+            {
+                id: 'g1-parana',
+                name: 'G1 Paraná',
+                url: 'https://g1.globo.com/pr/parana/',
+                searchUrl: 'https://g1.globo.com/busca/?q={TERMO}',
+                searchTerm: 'Paranavaí',
+                enabled: true
+            },
+            {
+                id: 'bem-parana',
+                name: 'Bem Paraná',
+                url: 'https://www.bemparana.com.br',
+                searchUrl: 'https://www.bemparana.com.br/?s={TERMO}',
+                searchTerm: 'Paranavaí',
+                enabled: true
+            },
+            {
+                id: 'folha-web',
+                name: 'Folha Web',
+                url: 'https://www.folhaweb.com.br',
+                searchUrl: 'https://www.folhaweb.com.br/?s={TERMO}',
+                searchTerm: 'Paranavaí',
+                enabled: true
+            }
+        ];
+        
+        function toggleAddSiteForm() {
+            const form = document.getElementById('addSiteForm');
+            const isVisible = form.style.display !== 'none';
+            form.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                loadConfiguredSites();
+            }
+        }
+        
+        function addCustomSite() {
+            const name = document.getElementById('siteName').value.trim();
+            const url = document.getElementById('siteUrl').value.trim();
+            const searchUrl = document.getElementById('searchUrl').value.trim();
+            const searchTerm = document.getElementById('searchTerm').value.trim();
+            
+            if (!name || !url || !searchUrl || !searchTerm) {
+                showNotification('❌ Preencha todos os campos obrigatórios!', 'error');
+                return;
+            }
+            
+            if (!searchUrl.includes('{TERMO}')) {
+                showNotification('❌ A URL de busca deve conter {TERMO}!', 'error');
+                return;
+            }
+            
+            const newSite = {
+                id: 'custom-' + Date.now(),
+                name: name,
+                url: url,
+                searchUrl: searchUrl,
+                searchTerm: searchTerm,
+                enabled: true,
+                custom: true
+            };
+            
+            customSites.push(newSite);
+            localStorage.setItem('customSites', JSON.stringify(customSites));
+            
+            // Limpar formulário
+            document.getElementById('siteName').value = '';
+            document.getElementById('siteUrl').value = '';
+            document.getElementById('searchUrl').value = '';
+            document.getElementById('searchTerm').value = '';
+            
+            showNotification(`✅ Site "${name}" adicionado com sucesso!`, 'success');
+            loadConfiguredSites();
+        }
+        
+        function testSiteSearch() {
+            const name = document.getElementById('siteName').value.trim();
+            const searchUrl = document.getElementById('searchUrl').value.trim();
+            const searchTerm = document.getElementById('searchTerm').value.trim();
+            
+            if (!searchUrl || !searchTerm) {
+                showNotification('❌ Preencha a URL de busca e o termo!', 'error');
+                return;
+            }
+            
+            if (!searchUrl.includes('{TERMO}')) {
+                showNotification('❌ A URL de busca deve conter {TERMO}!', 'error');
+                return;
+            }
+            
+            const testUrl = searchUrl.replace('{TERMO}', encodeURIComponent(searchTerm));
+            
+            showNotification(`🔍 Testando busca em: ${name || 'Site'}`, 'success');
+            
+            // Simular busca e adicionar notícias de teste
+            setTimeout(() => {
+                const testNews = {
+                    id: Date.now(),
+                    title: `Nova notícia encontrada em ${name || 'Site Personalizado'}`,
+                    excerpt: `Notícia encontrada através da busca por "${searchTerm}" no site configurado. Esta é uma simulação de como as notícias apareceriam no sistema.`,
+                    source: name || 'Site Personalizado',
+                    date: new Date().toISOString(),
+                    link: testUrl,
+                    image: `https://via.placeholder.com/400x250/17a2b8/ffffff?text=${encodeURIComponent(name || 'Teste')}`
+                };
+                
+                pendingNews.unshift(testNews);
+                loadPendingNews();
+                showNotification(`📰 Notícia de teste adicionada de: ${name || 'Site'}`, 'success');
+            }, 1500);
+        }
+        
+        function loadConfiguredSites() {
+            const container = document.getElementById('configuredSites');
+            
+            if (customSites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 30px 0;">
+                        <i class="fas fa-globe" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <h4>Nenhum site configurado</h4>
+                        <p>Adicione sites personalizados para buscar notícias automaticamente.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <h3 style="margin-bottom: 20px; color: #1e4a73;">Sites Configurados (${customSites.length})</h3>
+                ${customSites.map(site => `
+                    <div class="site-item">
+                        <div class="site-info">
+                            <h4>${site.name} ${site.custom ? '<small style="color: #28a745;">(Personalizado)</small>' : ''}</h4>
+                            <p><strong>Busca:</strong> ${site.searchTerm} | <strong>Status:</strong> ${site.enabled ? '✅ Ativo' : '❌ Inativo'}</p>
+                        </div>
+                        <div class="site-actions">
+                            <button class="action-btn btn-preview btn-small" onclick="searchSingleSite('${site.id}')">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                            <button class="action-btn ${site.enabled ? 'btn-reject' : 'btn-approve'} btn-small" onclick="toggleSite('${site.id}')">
+                                <i class="fas fa-${site.enabled ? 'pause' : 'play'}"></i> ${site.enabled ? 'Pausar' : 'Ativar'}
+                            </button>
+                            ${site.custom ? `
+                                <button class="action-btn btn-reject btn-small" onclick="removeSite('${site.id}')">
+                                    <i class="fas fa-trash"></i> Remover
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+        
+        function searchSingleSite(siteId) {
+            const site = customSites.find(s => s.id === siteId);
+            if (!site) return;
+            
+            showNotification(`🔍 Buscando notícias em: ${site.name}`, 'success');
+            
+            // Simular busca
+            setTimeout(() => {
+                const foundNews = Math.floor(Math.random() * 3) + 1; // 1-3 notícias
+                
+                for (let i = 0; i < foundNews; i++) {
+                    const newsItem = {
+                        id: Date.now() + i,
+                        title: `${site.name}: Notícia ${i + 1} sobre ${site.searchTerm}`,
+                        excerpt: `Esta é uma notícia encontrada no site ${site.name} através da busca automática por "${site.searchTerm}". O sistema encontrou conteúdo relevante para aprovação.`,
+                        source: site.name,
+                        date: new Date(Date.now() - i * 60000).toISOString(),
+                        link: site.searchUrl.replace('{TERMO}', encodeURIComponent(site.searchTerm)),
+                        image: `https://via.placeholder.com/400x250/${Math.floor(Math.random() * 16777215).toString(16)}/ffffff?text=${encodeURIComponent(site.name)}`
+                    };
+                    
+                    pendingNews.unshift(newsItem);
+                }
+                
+                loadPendingNews();
+                showNotification(`📰 ${foundNews} notícia(s) encontrada(s) em: ${site.name}`, 'success');
+            }, 2000);
+        }
+        
+        function searchAllSites() {
+            const activeSites = customSites.filter(site => site.enabled);
+            
+            if (activeSites.length === 0) {
+                showNotification('❌ Nenhum site ativo configurado!', 'error');
+                return;
+            }
+            
+            showNotification(`🌐 Buscando em ${activeSites.length} sites...`, 'success');
+            
+            activeSites.forEach((site, index) => {
+                setTimeout(() => {
+                    searchSingleSite(site.id);
+                }, index * 1000); // Escalonar as buscas
+            });
+        }
+        
+        function toggleSite(siteId) {
+            const site = customSites.find(s => s.id === siteId);
+            if (!site) return;
+            
+            site.enabled = !site.enabled;
+            localStorage.setItem('customSites', JSON.stringify(customSites));
+            
+            showNotification(`${site.enabled ? '✅' : '❌'} Site "${site.name}" ${site.enabled ? 'ativado' : 'desativado'}!`, 'success');
+            loadConfiguredSites();
+        }
+        
+        function removeSite(siteId) {
+            const site = customSites.find(s => s.id === siteId);
+            if (!site) return;
+            
+            if (confirm(`Tem certeza que deseja remover o site "${site.name}"?`)) {
+                customSites = customSites.filter(s => s.id !== siteId);
+                localStorage.setItem('customSites', JSON.stringify(customSites));
+                
+                showNotification(`🗑️ Site "${site.name}" removido!`, 'success');
+                loadConfiguredSites();
+            }
+        }
+        
+        // Carregar sites configurados na inicialização
+        loadConfiguredSites();
+        
+        console.log('🚀 Sistema de Aprovação de Notícias carregado!');
+        console.log('📊 Notícias pendentes:', pendingNews.length);
+        console.log('🌐 Sites configurados:', customSites.length);
+    </script>
+</body>
+</html>

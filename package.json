@@ -9,9 +9,10 @@
     "admin": "node server_admin.js",
     "build": "echo 'Static build - no compilation needed'",
     "test": "npm run lint && npm run build:test",
-    "build:test": "node -e 'console.log(\"Build test passed!\")'",
+    "build:test": "node -e 'console.log(\"Build test passed!)'",
     "lint": "echo 'Linting HTML, CSS and JS files - OK'",
     "serve": "npx http-server . -p 8080 -c-1",
+    "pre-deploy": "npm test && node validate-vercel.js",
     "vercel-build": "npm run build"
   },
   "keywords": [

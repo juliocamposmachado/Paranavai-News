@@ -10,14 +10,16 @@ node_modules/
 server_admin.js
 backend/
 build.js
+DEPLOY_STATUS.md
 VERCEL_DEPLOY.md
 DASHBOARD_ADMIN.md
+build-info.json
 
-# Manter apenas arquivos essenciais
+# Manter arquivos essenciais - explicitamente
 !index.html
-!admin/
-!api/
-!assets/
-!pages/
+!admin/**
+!api/**
+!assets/**
+!pages/**
 !package.json
 !vercel.json

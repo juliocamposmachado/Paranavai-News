@@ -6,7 +6,7 @@
     <title>Dashboard Administrativa - Portal Paranavaí News</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/admin/css/admin.css">
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
     <!-- Tela de Login -->
@@ -81,6 +81,15 @@
                 <span>Rejeitados</span>
                 <span class="nav-count" id="rejectedCount">0</span>
             </button>
+            <button class="nav-btn" data-section="contacts">
+                <i class="fas fa-address-book"></i>
+                <span>Contatos</span>
+                <span class="nav-count" id="contactsCount">0</span>
+            </button>
+            <button class="nav-btn" data-section="analysis">
+                <i class="fas fa-chart-line"></i>
+                <span>Análise</span>
+            </button>
             <button class="nav-btn" data-section="stats">
                 <i class="fas fa-chart-bar"></i>
                 <span>Estatísticas</span>
@@ -128,6 +137,90 @@
                 </div>
                 <div id="rejectedContent" class="content-grid">
                     <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Seção Contatos -->
+            <section id="contactsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-address-book"></i> Agenda de Contatos - Políticos do Paraná</h2>
+                    <div class="section-actions">
+                        <button id="syncContactsBtn" class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i>
+                            Sincronizar Contatos
+                        </button>
+                        <button id="addContactBtn" class="btn btn-secondary">
+                            <i class="fas fa-plus"></i>
+                            Adicionar Contato
+                        </button>
+                    </div>
+                </div>
+                <div class="contacts-filters">
+                    <input type="text" id="contactSearch" placeholder="Pesquisar por nome, cargo ou cidade...">
+                    <select id="cityFilter">
+                        <option value="all">Todas as Cidades</option>
+                        <option value="Paranavaí">Paranavaí</option>
+                        <option value="Curitiba">Curitiba</option>
+                        <option value="Maringá">Maringá</option>
+                        <option value="Londrina">Londrina</option>
+                    </select>
+                    <select id="positionFilter">
+                        <option value="all">Todos os Cargos</option>
+                        <option value="deputado">Deputado Estadual</option>
+                        <option value="prefeito">Prefeito</option>
+                        <option value="vereador">Vereador</option>
+                        <option value="senador">Senador</option>
+                    </select>
+                </div>
+                <div id="contactsGrid" class="contacts-grid">
+                    <!-- Contatos serão carregados dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Seção Análise PowerBI -->
+            <section id="analysisSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Análise de Dados - PowerBI Integration</h2>
+                    <div class="section-actions">
+                        <button id="refreshAnalysisBtn" class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i>
+                            Atualizar Dados
+                        </button>
+                        <button id="exportDataBtn" class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Exportar Dados
+                        </button>
+                    </div>
+                </div>
+                <div class="analysis-tabs">
+                    <button class="tab-btn active" data-tab="dashboard">Dashboard Principal</button>
+                    <button class="tab-btn" data-tab="reports">Relatórios</button>
+                    <button class="tab-btn" data-tab="data-sources">Fontes de Dados</button>
+                </div>
+                <div class="analysis-content">
+                    <div id="dashboardTab" class="tab-content active">
+                        <div class="powerbi-embed">
+                            <div class="embed-placeholder">
+                                <i class="fas fa-chart-pie"></i>
+                                <h3>Dashboard PowerBI</h3>
+                                <p>Visualização integrada dos dados do Portal Paranavaí News</p>
+                                <div class="powerbi-status">
+                                    <span class="status-indicator"></span>
+                                    <span id="powerbiStatus">Conectando...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="reportsTab" class="tab-content" style="display: none;">
+                        <div class="reports-grid">
+                            <!-- Relatórios serão carregados dinamicamente -->
+                        </div>
+                    </div>
+                    <div id="dataSourcesTab" class="tab-content" style="display: none;">
+                        <div class="data-sources-list">
+                            <!-- Fontes de dados serão carregadas dinamicamente -->
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -219,9 +312,112 @@
         </div>
     </div>
 
+    <!-- Modal Adicionar Contato -->
+    <div id="contactModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="contactModalTitle">Adicionar Contato</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactName">Nome Completo *</label>
+                            <input type="text" id="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPosition">Cargo *</label>
+                            <select id="contactPosition" required>
+                                <option value="">Selecionar cargo...</option>
+                                <option value="deputado">Deputado Estadual</option>
+                                <option value="prefeito">Prefeito</option>
+                                <option value="vereador">Vereador</option>
+                                <option value="senador">Senador</option>
+                                <option value="secretario">Secretário</option>
+                                <option value="assessor">Assessor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactCity">Cidade *</label>
+                            <input type="text" id="contactCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactParty">Partido</label>
+                            <input type="text" id="contactParty">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactPhone">Telefone Principal *</label>
+                            <input type="tel" id="contactPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMobile">Celular</label>
+                            <input type="tel" id="contactMobile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">E-mail</label>
+                        <input type="email" id="contactEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactOffice">Endereço do Gabinete</label>
+                        <textarea id="contactOffice" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNotes">Observações</label>
+                        <textarea id="contactNotes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="saveContactBtn" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Salvar Contato
+                </button>
+                <button class="btn btn-secondary modal-close">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Visualizar Contato -->
+    <div id="viewContactModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalhes do Contato</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="contactDetails">
+                    <!-- Detalhes serão carregados dinamicamente -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="editContactBtn" class="btn btn-primary">
+                    <i class="fas fa-edit"></i>
+                    Editar
+                </button>
+                <button id="deleteContactBtn" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                    Excluir
+                </button>
+                <button class="btn btn-secondary modal-close">
+                    <i class="fas fa-arrow-left"></i>
+                    Voltar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notifications -->
     <div id="toastContainer" class="toast-container"></div>
 
-    <script src="/admin/js/admin.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
