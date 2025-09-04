@@ -1,7 +1,7 @@
 // Esta função será executada automaticamente pela API de notícias
 // quando necessário, então apenas retorna uma resposta de sucesso
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // Configurar CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');

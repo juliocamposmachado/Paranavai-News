@@ -1,9 +1,30 @@
 // Integração com API de Notícias Parceiras
 class NoticiasParcerias {
     constructor() {
-        this.apiUrl = 'http://localhost:3000/api';
+        // Detectar ambiente automaticamente
+        this.apiUrl = this.detectarApiUrl();
         this.cacheLocal = 'noticias_parceiros';
         this.tempoCache = 30 * 60 * 1000; // 30 minutos
+        console.log('🌐 API URL configurada:', this.apiUrl);
+    }
+    
+    detectarApiUrl() {
+        const hostname = window.location.hostname;
+        const protocol = window.location.protocol;
+        const port = window.location.port;
+        
+        // Ambiente de produção (Vercel)
+        if (hostname.includes('vercel.app') || hostname.includes('paranavai-news')) {
+            return `${protocol}//${hostname}/api`;
+        }
+        
+        // Ambiente local
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return port ? `http://localhost:3000/api` : `http://localhost:3000/api`;
+        }
+        
+        // Fallback para ambiente personalizado
+        return `${protocol}//${hostname}${port ? ':' + port : ''}/api`;
     }
 
     async carregarNoticias() {
