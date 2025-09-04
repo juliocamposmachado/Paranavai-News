@@ -496,11 +496,14 @@
 }
 
 /* ===========================================
-   SELETORES ULTRA-ESPECÍFICOS PARA SOBREPOR COMPLETAMENTE O STYLE.CSS
+   FORÇA BRUTA: SELETORES MÁXIMA ESPECIFICIDADE
    =========================================== */
 
-/* Garantir que os estilos do style.css sejam completamente sobrescritos */
-body .newsletter-section .container .newsletter-content form#newsletter-form.newsletter-form {
+/* Neutralizar TODOS os estilos possíveis - FORÇA MÁXIMA */
+html body .newsletter-section .container .newsletter-content form#newsletter-form.newsletter-form,
+html body .newsletter-section .newsletter-content form#newsletter-form.newsletter-form,
+html body .newsletter-section form#newsletter-form.newsletter-form,
+html body form#newsletter-form.newsletter-form {
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -511,9 +514,14 @@ body .newsletter-section .container .newsletter-content form#newsletter-form.new
     background: rgba(255, 255, 255, 0.95) !important;
     border-radius: 20px !important;
     padding: 40px !important;
+    box-sizing: border-box !important;
 }
 
-body .newsletter-section .container .newsletter-content form#newsletter-form.newsletter-form .form-group {
+/* FORÇA MÁXIMA para form-groups */
+html body .newsletter-section .container .newsletter-content form#newsletter-form.newsletter-form .form-group,
+html body .newsletter-section .newsletter-content form#newsletter-form.newsletter-form .form-group,
+html body .newsletter-section form#newsletter-form.newsletter-form .form-group,
+html body form#newsletter-form.newsletter-form .form-group {
     display: block !important;
     flex: none !important;
     width: 100% !important;
@@ -521,9 +529,15 @@ body .newsletter-section .container .newsletter-content form#newsletter-form.new
     padding: 0 !important;
     float: none !important;
     clear: both !important;
+    box-sizing: border-box !important;
+    position: relative !important;
 }
 
-body .newsletter-section .container .newsletter-content form#newsletter-form.newsletter-form .form-group input {
+/* FORÇA MÁXIMA para inputs */
+html body .newsletter-section .container .newsletter-content form#newsletter-form.newsletter-form .form-group input,
+html body .newsletter-section .newsletter-content form#newsletter-form.newsletter-form .form-group input,
+html body .newsletter-section form#newsletter-form.newsletter-form .form-group input,
+html body form#newsletter-form.newsletter-form .form-group input {
     flex: none !important;
     width: 100% !important;
     display: block !important;
@@ -533,4 +547,26 @@ body .newsletter-section .container .newsletter-content form#newsletter-form.new
     border-radius: 12px !important;
     font-size: 1rem !important;
     background: #ffffff !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    clear: both !important;
+    position: relative !important;
+}
+
+/* CSS Inline style override */
+.newsletter-form[style] {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.form-group[style] {
+    display: block !important;
+    width: 100% !important;
+    flex: none !important;
+}
+
+.form-group input[style] {
+    width: 100% !important;
+    flex: none !important;
+    display: block !important;
 }
