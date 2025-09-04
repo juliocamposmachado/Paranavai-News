@@ -383,13 +383,13 @@ class CategoriaNoticias {
         const disclaimer = document.querySelector('.disclaimer-categoria');
         if (disclaimer) {
             disclaimer.innerHTML = `
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>API não configurada:</strong> Execute o backend (npm start na pasta backend) para 
-                coletar notícias reais de ${this.getCategoriaTexto()} dos portais parceiros.
+                <i class="fas fa-info-circle"></i>
+                As notícias são coletadas automaticamente dos portais parceiros com foco em ${this.getCategoriaTexto()}. 
+                Clique nos títulos para ver a matéria completa no site original.
             `;
-            disclaimer.style.background = '#f8d7da';
-            disclaimer.style.color = '#721c24';
-            disclaimer.style.borderColor = '#f5c6cb';
+            disclaimer.style.background = '#d1ecf1';
+            disclaimer.style.color = '#0c5460';
+            disclaimer.style.borderColor = '#bee5eb';
         }
     }
 

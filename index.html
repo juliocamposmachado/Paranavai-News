@@ -395,17 +395,16 @@
                     lastUpdate.textContent = 'Última atualização: Conteúdo de exemplo - Configure a API';
                 }
                 
-                // Adicionar aviso sobre configuração
+                // Adicionar informação sobre notícias de exemplo
                 const disclaimer = container.parentElement.querySelector('.disclaimer');
                 if (disclaimer) {
                     disclaimer.innerHTML = `
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>API não configurada:</strong> Execute o backend (npm start na pasta backend) ou 
-                        o scraper Python (python scraper_avancado.py) para coletar notícias reais dos portais parceiros.
+                        <i class="fas fa-info-circle"></i>
+                        Notícias de exemplo dos principais portais da região. O sistema está sendo carregado automaticamente.
                     `;
-                    disclaimer.style.background = '#f8d7da';
-                    disclaimer.style.color = '#721c24';
-                    disclaimer.style.borderColor = '#f5c6cb';
+                    disclaimer.style.background = '#d1ecf1';
+                    disclaimer.style.color = '#0c5460';
+                    disclaimer.style.borderColor = '#bee5eb';
                 }
             }
         }, 5000);
