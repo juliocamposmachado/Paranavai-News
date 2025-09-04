@@ -764,7 +764,7 @@
             }, 3000);
         }
 
-        function approveNews(id) {
+        async function approveNews(id) {
             const newsIndex = pendingNews.findIndex(n => n.id === id);
             if (newsIndex === -1) return;
 
@@ -773,8 +773,57 @@
             news.approvedBy = 'Matheus';
             approvedNews.unshift(news);
             
-            showNotification(`✅ Notícia "${news.title.substring(0, 50)}..." foi aprovada!`, 'success');
+            // Enviar para a API de notícias aprovadas para aparecer na página principal
+            try {
+                const apiUrl = getApiUrl();
+                const response = await fetch(`${apiUrl}/approved-news`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: news.id,
+                        title: news.title,
+                        excerpt: news.excerpt,
+                        source: news.source,
+                        date: news.date,
+                        link: news.link,
+                        image: news.image,
+                        approvedBy: 'Matheus'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(`✅ Notícia "${news.title.substring(0, 50)}..." foi aprovada e publicada!`, 'success');
+                } else {
+                    console.error('Erro ao publicar notícia:', result.error);
+                    showNotification(`✅ Notícia aprovada localmente! Erro na publicação: ${result.error}`, 'success');
+                }
+                
+            } catch (error) {
+                console.error('Erro ao conectar com API:', error);
+                showNotification(`✅ Notícia "${news.title.substring(0, 50)}..." foi aprovada localmente!`, 'success');
+            }
+            
             loadPendingNews();
+        }
+        
+        // Função auxiliar para detectar URL da API
+        function getApiUrl() {
+            const hostname = window.location.hostname;
+            const protocol = window.location.protocol;
+            
+            if (hostname.includes('vercel.app') || hostname.includes('paranavai-news')) {
+                return `${protocol}//${hostname}/api`;
+            }
+            
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return 'http://localhost:3000/api';
+            }
+            
+            return `${protocol}//${hostname}/api`;
         }
 
         function rejectNews(id) {

@@ -319,11 +319,33 @@ module.exports = async function handler(req, res) {
             await coletarTodasNoticias();
         }
         
+        // Buscar notícias aprovadas da API
+        let noticiasAprovadas = [];
+        try {
+            const { default: fetch } = await import('node-fetch');
+            const baseUrl = req.headers['x-forwarded-proto'] 
+                ? `${req.headers['x-forwarded-proto']}://${req.headers.host}` 
+                : `https://${req.headers.host}`;
+            
+            const approvedResponse = await fetch(`${baseUrl}/api/approved-news`);
+            if (approvedResponse.ok) {
+                const approvedData = await approvedResponse.json();
+                noticiasAprovadas = approvedData.noticias || [];
+            }
+        } catch (error) {
+            console.log('Notícias aprovadas não disponíveis:', error.message);
+        }
+        
+        // Combinar notícias dos portais + notícias aprovadas
+        const todasNoticias = [...noticiasAprovadas, ...cache.noticias];
+        
         return res.status(200).json({
             success: true,
-            noticias: cache.noticias,
+            noticias: todasNoticias.slice(0, 20), // Limitar a 20 notícias totais
             ultimaAtualizacao: cache.ultimaAtualizacao,
-            totalPortais: PORTAIS_PARCEIROS.length
+            totalPortais: PORTAIS_PARCEIROS.length,
+            noticiasAprovadas: noticiasAprovadas.length,
+            noticiasPortais: cache.noticias.length
         });
     } catch (error) {
         console.error('Erro na API:', error);
