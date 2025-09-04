@@ -1,341 +1,266 @@
-/**
- * API Handler para Gerenciamento de Contatos
- * Compatível com Vercel Serverless Functions
- */
+const { supabase } = require('../utils/supabase');
 
-const ContactsScraper = require('../backend/contacts_scraper');
-const fs = require('fs').promises;
-const path = require('path');
-
-// Simula base de dados local para contatos
-let contactsData = [];
-const CONTACTS_FILE = '/tmp/contacts.json';
-
-// Carrega contatos do arquivo temporário (Vercel)
-async function loadContacts() {
-    try {
-        const data = await fs.readFile(CONTACTS_FILE, 'utf8');
-        contactsData = JSON.parse(data);
-    } catch (error) {
-        // Se não existir, inicia com dados padrão
-        contactsData = await getDefaultContacts();
-        await saveContacts();
-    }
-    return contactsData;
+// Função para validar dados do contato
+function validarContato(dados) {
+  const erros = [];
+  
+  if (!dados.nome || dados.nome.trim().length < 2) {
+    erros.push('Nome é obrigatório e deve ter pelo menos 2 caracteres');
+  }
+  
+  if (!dados.email || !isValidEmail(dados.email)) {
+    erros.push('Email é obrigatório e deve ser válido');
+  }
+  
+  if (!dados.mensagem || dados.mensagem.trim().length < 10) {
+    erros.push('Mensagem é obrigatória e deve ter pelo menos 10 caracteres');
+  }
+  
+  return erros;
 }
 
-// Salva contatos no arquivo temporário
-async function saveContacts() {
-    try {
-        await fs.writeFile(CONTACTS_FILE, JSON.stringify(contactsData, null, 2));
-    } catch (error) {
-        console.error('Erro ao salvar contatos:', error);
-    }
+// Função para validar email
+function isValidEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
 }
 
-// Dados padrão de contatos
-async function getDefaultContacts() {
-    return [
-        {
-            id: 'dr-leonidas',
-            name: 'Dr. Leônidas',
-            position: 'prefeito',
-            party: '',
-            city: 'Paranavaí',
-            phone: '(44) 3482-8600',
-            mobile: '',
-            email: 'gabinete@paranavai.pr.gov.br',
-            office: 'Av. Getúlio Vargas, 102 - Centro, Paranavaí - PR',
-            notes: 'Prefeito de Paranavaí',
-            source: 'manual',
-            verified: true,
-            lastUpdate: new Date().toISOString()
-        },
-        {
-            id: 'rafael-greca',
-            name: 'Rafael Greca',
-            position: 'prefeito',
-            party: 'PMN',
-            city: 'Curitiba',
-            phone: '(41) 3350-8000',
-            mobile: '',
-            email: 'gabinete@curitiba.pr.gov.br',
-            office: 'Av. Cândido de Abreu, 817 - Centro Cívico, Curitiba - PR',
-            notes: 'Prefeito de Curitiba',
-            source: 'manual',
-            verified: true,
-            lastUpdate: new Date().toISOString()
-        },
-        {
-            id: 'ulisses-maia',
-            name: 'Ulisses Maia',
-            position: 'prefeito',
-            party: 'MDB',
-            city: 'Maringá',
-            phone: '(44) 3901-1000',
-            mobile: '',
-            email: 'prefeito@maringa.pr.gov.br',
-            office: 'Av. Cerro Azul, 1306 - Centro, Maringá - PR',
-            notes: 'Prefeito de Maringá',
-            source: 'manual',
-            verified: true,
-            lastUpdate: new Date().toISOString()
-        },
-        {
-            id: 'flavio-arns',
-            name: 'Flávio Arns',
-            position: 'senador',
-            party: 'PODEMOS',
-            city: 'Curitiba',
-            phone: '(41) 3330-1500',
-            mobile: '',
-            email: 'sen.flavioarns@senado.leg.br',
-            office: 'Senado Federal - Anexo II - Ala Senador Alexandre Costa',
-            notes: 'Senador pelo Paraná',
-            source: 'manual',
-            verified: true,
-            lastUpdate: new Date().toISOString()
+// Função para salvar contato no banco
+async function salvarContato(dadosContato, req) {
+  try {
+    const { data, error } = await supabase
+      .from('contatos')
+      .insert([{
+        nome: dadosContato.nome.trim(),
+        email: dadosContato.email.toLowerCase().trim(),
+        telefone: dadosContato.telefone ? dadosContato.telefone.trim() : null,
+        assunto: dadosContato.assunto ? dadosContato.assunto.trim() : 'Contato Geral',
+        mensagem: dadosContato.mensagem.trim(),
+        status: 'novo',
+        ip_address: req.ip || req.connection.remoteAddress || 'unknown',
+        user_agent: req.get('User-Agent') || 'unknown'
+      }])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Erro ao salvar contato:', error);
+      throw new Error('Erro interno ao salvar contato');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Erro ao salvar contato:', error);
+    throw error;
+  }
+}
+
+// Função para buscar contatos (para admin)
+async function buscarContatos(filtros = {}) {
+  try {
+    let query = supabase
+      .from('contatos')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    // Aplicar filtros se fornecidos
+    if (filtros.status) {
+      query = query.eq('status', filtros.status);
+    }
+    
+    if (filtros.limit) {
+      query = query.limit(filtros.limit);
+    }
+    
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('Erro ao buscar contatos:', error);
+      throw new Error('Erro interno ao buscar contatos');
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Erro ao buscar contatos:', error);
+    throw error;
+  }
+}
+
+// Função para atualizar status do contato
+async function atualizarStatusContato(id, novoStatus) {
+  try {
+    const { data, error } = await supabase
+      .from('contatos')
+      .update({
+        status: novoStatus,
+        updated_at: new Date()
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Erro ao atualizar contato:', error);
+      throw new Error('Erro interno ao atualizar contato');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Erro ao atualizar contato:', error);
+    throw error;
+  }
+}
+
+// Função para obter estatísticas de contatos
+async function obterEstatisticasContatos() {
+  try {
+    // Contar total de contatos
+    const { count: total, error: totalError } = await supabase
+      .from('contatos')
+      .select('*', { count: 'exact', head: true });
+    
+    if (totalError) throw totalError;
+    
+    // Contar contatos novos
+    const { count: novos, error: novosError } = await supabase
+      .from('contatos')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'novo');
+    
+    if (novosError) throw novosError;
+    
+    // Contar contatos de hoje
+    const hoje = new Date().toISOString().split('T')[0];
+    const { count: hoje_count, error: hojeError } = await supabase
+      .from('contatos')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', hoje);
+    
+    if (hojeError) throw hojeError;
+    
+    return {
+      total: total || 0,
+      novos: novos || 0,
+      hoje: hoje_count || 0,
+      respondidos: (total || 0) - (novos || 0)
+    };
+  } catch (error) {
+    console.error('Erro ao obter estatísticas:', error);
+    return {
+      total: 0,
+      novos: 0,
+      hoje: 0,
+      respondidos: 0
+    };
+  }
+}
+
+// Função principal da API
+module.exports = async function handler(req, res) {
+  // Configurar CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  try {
+    switch (req.method) {
+      case 'POST':
+        // Criar novo contato
+        const dadosContato = req.body;
+        
+        // Validar dados
+        const errosValidacao = validarContato(dadosContato);
+        if (errosValidacao.length > 0) {
+          return res.status(400).json({
+            success: false,
+            errors: errosValidacao
+          });
         }
-    ];
-}
-
-// Handler principal da API
-module.exports = async (req, res) => {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    try {
-        const { method } = req;
-        const url = new URL(req.url, `http://${req.headers.host}`);
-        const action = url.searchParams.get('action') || url.pathname.split('/').pop();
-
-        // Carrega contatos
-        await loadContacts();
-
-        switch (method) {
-            case 'GET':
-                return handleGet(req, res, action);
-            case 'POST':
-                return handlePost(req, res, action);
-            case 'PUT':
-                return handlePut(req, res, action);
-            case 'DELETE':
-                return handleDelete(req, res, action);
-            default:
-                return res.status(405).json({ error: 'Method not allowed' });
+        
+        // Salvar contato
+        const novoContato = await salvarContato(dadosContato, req);
+        
+        return res.status(201).json({
+          success: true,
+          message: 'Contato enviado com sucesso! Responderemos em breve.',
+          contato: {
+            id: novoContato.id,
+            nome: novoContato.nome,
+            email: novoContato.email,
+            created_at: novoContato.created_at
+          }
+        });
+      
+      case 'GET':
+        // Buscar contatos (admin)
+        const { status, limit, stats } = req.query;
+        
+        // Se solicitar apenas estatísticas
+        if (stats === 'true') {
+          const estatisticas = await obterEstatisticasContatos();
+          return res.status(200).json({
+            success: true,
+            estatisticas
+          });
         }
-    } catch (error) {
-        console.error('API Error:', error);
-        return res.status(500).json({ 
-            error: 'Internal server error',
-            message: error.message 
+        
+        // Buscar contatos com filtros
+        const contatos = await buscarContatos({
+          status: status || undefined,
+          limit: limit ? parseInt(limit) : 50
+        });
+        
+        return res.status(200).json({
+          success: true,
+          contatos: contatos.map(contato => ({
+            id: contato.id,
+            nome: contato.nome,
+            email: contato.email,
+            telefone: contato.telefone,
+            assunto: contato.assunto,
+            mensagem: contato.mensagem,
+            status: contato.status,
+            created_at: contato.created_at,
+            updated_at: contato.updated_at
+          })),
+          total: contatos.length
+        });
+      
+      case 'PUT':
+        // Atualizar status do contato (admin)
+        const { id, novoStatus } = req.body;
+        
+        if (!id || !novoStatus) {
+          return res.status(400).json({
+            success: false,
+            error: 'ID e novo status são obrigatórios'
+          });
+        }
+        
+        const contatoAtualizado = await atualizarStatusContato(id, novoStatus);
+        
+        return res.status(200).json({
+          success: true,
+          message: 'Status atualizado com sucesso',
+          contato: contatoAtualizado
+        });
+      
+      default:
+        return res.status(405).json({
+          success: false,
+          error: 'Método não permitido'
         });
     }
+    
+  } catch (error) {
+    console.error('Erro na API de contatos:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Erro interno do servidor'
+    });
+  }
 };
-
-// Handle GET requests
-async function handleGet(req, res, action) {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const id = url.searchParams.get('id');
-    const search = url.searchParams.get('search');
-    const city = url.searchParams.get('city');
-    const position = url.searchParams.get('position');
-
-    switch (action) {
-        case 'list':
-        case 'contacts':
-            let filteredContacts = contactsData;
-
-            // Filtros
-            if (search) {
-                const searchLower = search.toLowerCase();
-                filteredContacts = filteredContacts.filter(contact =>
-                    contact.name.toLowerCase().includes(searchLower) ||
-                    contact.city.toLowerCase().includes(searchLower) ||
-                    contact.position.toLowerCase().includes(searchLower)
-                );
-            }
-
-            if (city && city !== 'all') {
-                filteredContacts = filteredContacts.filter(contact =>
-                    contact.city.toLowerCase() === city.toLowerCase()
-                );
-            }
-
-            if (position && position !== 'all') {
-                filteredContacts = filteredContacts.filter(contact =>
-                    contact.position.toLowerCase() === position.toLowerCase()
-                );
-            }
-
-            return res.json({
-                success: true,
-                data: filteredContacts,
-                total: filteredContacts.length
-            });
-
-        case 'get':
-            if (!id) {
-                return res.status(400).json({ error: 'ID is required' });
-            }
-            const contact = contactsData.find(c => c.id === id);
-            if (!contact) {
-                return res.status(404).json({ error: 'Contact not found' });
-            }
-            return res.json({ success: true, data: contact });
-
-        case 'sync':
-            try {
-                const scraper = new ContactsScraper();
-                const syncedContacts = await scraper.syncAll();
-                
-                // Mescla com contatos existentes
-                const existingIds = contactsData.map(c => c.id);
-                const newContacts = syncedContacts.filter(c => !existingIds.includes(c.id));
-                
-                contactsData = [...contactsData, ...newContacts];
-                await saveContacts();
-
-                return res.json({
-                    success: true,
-                    message: `${newContacts.length} novos contatos sincronizados`,
-                    total: contactsData.length
-                });
-            } catch (error) {
-                return res.status(500).json({
-                    error: 'Sync failed',
-                    message: error.message
-                });
-            }
-
-        case 'stats':
-            const stats = {
-                total: contactsData.length,
-                byPosition: {},
-                byCity: {},
-                verified: contactsData.filter(c => c.verified).length,
-                unverified: contactsData.filter(c => !c.verified).length
-            };
-
-            contactsData.forEach(contact => {
-                stats.byPosition[contact.position] = (stats.byPosition[contact.position] || 0) + 1;
-                stats.byCity[contact.city] = (stats.byCity[contact.city] || 0) + 1;
-            });
-
-            return res.json({ success: true, data: stats });
-
-        default:
-            return res.status(400).json({ error: 'Invalid action' });
-    }
-}
-
-// Handle POST requests (create)
-async function handlePost(req, res, action) {
-    if (action !== 'create' && action !== 'contacts') {
-        return res.status(400).json({ error: 'Invalid action for POST' });
-    }
-
-    const body = req.body;
-    if (!body || !body.name || !body.position || !body.city) {
-        return res.status(400).json({ error: 'Name, position, and city are required' });
-    }
-
-    const newContact = {
-        id: generateId(body.name),
-        name: body.name.trim(),
-        position: body.position,
-        party: body.party || '',
-        city: body.city.trim(),
-        phone: body.phone || '',
-        mobile: body.mobile || '',
-        email: body.email || '',
-        office: body.office || '',
-        notes: body.notes || '',
-        source: 'manual',
-        verified: false,
-        lastUpdate: new Date().toISOString()
-    };
-
-    // Verifica duplicatas
-    if (contactsData.find(c => c.id === newContact.id)) {
-        return res.status(409).json({ error: 'Contact already exists' });
-    }
-
-    contactsData.push(newContact);
-    await saveContacts();
-
-    return res.status(201).json({
-        success: true,
-        message: 'Contact created successfully',
-        data: newContact
-    });
-}
-
-// Handle PUT requests (update)
-async function handlePut(req, res, action) {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const id = url.searchParams.get('id');
-
-    if (!id) {
-        return res.status(400).json({ error: 'ID is required' });
-    }
-
-    const contactIndex = contactsData.findIndex(c => c.id === id);
-    if (contactIndex === -1) {
-        return res.status(404).json({ error: 'Contact not found' });
-    }
-
-    const body = req.body;
-    const updatedContact = {
-        ...contactsData[contactIndex],
-        ...body,
-        lastUpdate: new Date().toISOString()
-    };
-
-    contactsData[contactIndex] = updatedContact;
-    await saveContacts();
-
-    return res.json({
-        success: true,
-        message: 'Contact updated successfully',
-        data: updatedContact
-    });
-}
-
-// Handle DELETE requests
-async function handleDelete(req, res, action) {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const id = url.searchParams.get('id');
-
-    if (!id) {
-        return res.status(400).json({ error: 'ID is required' });
-    }
-
-    const contactIndex = contactsData.findIndex(c => c.id === id);
-    if (contactIndex === -1) {
-        return res.status(404).json({ error: 'Contact not found' });
-    }
-
-    const deletedContact = contactsData.splice(contactIndex, 1)[0];
-    await saveContacts();
-
-    return res.json({
-        success: true,
-        message: 'Contact deleted successfully',
-        data: deletedContact
-    });
-}
-
-// Utility functions
-function generateId(name) {
-    return name.toLowerCase()
-               .replace(/\s+/g, '-')
-               .replace(/[^\w-]/g, '')
-               .substring(0, 50);
-}

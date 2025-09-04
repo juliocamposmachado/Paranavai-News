@@ -220,7 +220,7 @@ class NoticiasParcerias {
             
             // Tentar API first
             try {
-                const response = await fetch(`${this.apiUrl}/atualizar`, { 
+                const response = await fetch(`${this.apiUrl}/utils?action=update`, { 
                     method: 'POST',
                     timeout: 5000 
                 });
