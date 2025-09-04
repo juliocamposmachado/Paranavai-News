@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
   "functions": {
     "api/*.js": {
       "maxDuration": 30
@@ -16,6 +18,22 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/$1.js"
+    },
+    {
+      "source": "/politica",
+      "destination": "/pages/politica.html"
+    },
+    {
+      "source": "/saude",
+      "destination": "/pages/saude.html"
+    },
+    {
+      "source": "/agronegocio",
+      "destination": "/pages/agronegocio.html"
+    },
+    {
+      "source": "/turismo",
+      "destination": "/pages/turismo.html"
     }
   ],
   "headers": [

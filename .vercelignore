@@ -1,0 +1,23 @@
+# Vercel ignore
+node_modules/
+*.log
+.env*
+.DS_Store
+*.tmp
+*.temp
+
+# Build artifacts que não são necessários
+server_admin.js
+backend/
+build.js
+VERCEL_DEPLOY.md
+DASHBOARD_ADMIN.md
+
+# Manter apenas arquivos essenciais
+!index.html
+!admin/
+!api/
+!assets/
+!pages/
+!package.json
+!vercel.json
