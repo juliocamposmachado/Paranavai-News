@@ -6,7 +6,7 @@
 class CategoriaNoticias {
     constructor(categoria) {
         this.categoria = categoria;
-        this.apiUrl = 'http://localhost:3000/api';
+        this.apiUrl = '/api';
         this.cacheLocal = `noticias_${categoria}`;
         this.tempoCache = 30 * 60 * 1000; // 30 minutos
         this.container = null;
