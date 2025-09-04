@@ -1,0 +1,158 @@
+# .htaccess - Portal Paranavaí News
+# Otimizações de performance e SEO
+
+# Habilitar compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom_xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Cache de arquivos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Imagens
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS e JS
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # HTML
+    ExpiresByType text/html "access plus 1 day"
+    ExpiresByType application/xhtml+xml "access plus 1 day"
+    
+    # Fonts
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    
+    # Outros
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/xml "access plus 1 hour"
+    ExpiresByType application/json "access plus 1 hour"
+    ExpiresByType text/xml "access plus 1 hour"
+</IfModule>
+
+# Cabeçalhos de cache
+<IfModule mod_headers.c>
+    # Cache para imagens
+    <FilesMatch "\.(ico|jpe?g|png|gif|webp|svg)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+    
+    # Cache para CSS e JS
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+    
+    # Security headers
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    
+    # CORS para fonts
+    <FilesMatch "\.(ttf|otf|eot|woff|woff2)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
+# URL amigáveis
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Forçar HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Remover .html das URLs
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([^.]+)$ $1.html [NC,L]
+    
+    # Redirecionamento para páginas sem .html
+    RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+    
+    # Redirecionamentos específicos
+    RewriteRule ^noticias$ /pages/politica.html [R=301,L]
+    RewriteRule ^sobre$ /#equipe [R=301,L]
+    RewriteRule ^contato$ /#contato [R=301,L]
+</IfModule>
+
+# Proteção de arquivos sensíveis
+<Files "*.py">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.json">
+    Order allow,deny
+    Deny from all
+    <Files "manifest.json">
+        Order allow,deny
+        Allow from all
+    </Files>
+</Files>
+
+<Files ".env*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.log">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Tipos MIME
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType image/svg+xml .svg
+    AddType image/webp .webp
+    AddType application/manifest+json .webmanifest
+    AddType application/x-web-app-manifest+json .webapp
+    AddType text/cache-manifest .appcache
+    AddType font/woff2 .woff2
+</IfModule>
+
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Página de erro personalizada
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# Compressão de texto
+<IfModule mod_mime.c>
+    AddEncoding gzip .gz
+    AddHandler application/x-httpd-php .php
+</IfModule>
+
+# Otimização de performance
+<IfModule mod_pagespeed.c>
+    ModPagespeed on
+    ModPagespeedEnableFilters rewrite_css,rewrite_javascript,rewrite_images
+    ModPagespeedEnableFilters collapse_whitespace,remove_comments
+</IfModule>

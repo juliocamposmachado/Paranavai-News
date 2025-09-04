@@ -1,0 +1,112 @@
+{
+  "name": "Portal Paranavaí News",
+  "short_name": "Paranavaí News",
+  "description": "Portal de notícias da região de Paranavaí e Paraná. Acompanhe política, saúde, agronegócio e turismo regional.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1e4a73",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["news", "politics", "health", "agriculture", "tourism"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Política",
+      "short_name": "Política",
+      "description": "Notícias políticas da região",
+      "url": "/pages/politica.html",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "32x32",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Saúde",
+      "short_name": "Saúde",
+      "description": "Notícias sobre saúde e SUS",
+      "url": "/pages/saude.html",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "32x32",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Agronegócio",
+      "short_name": "Agro",
+      "description": "Notícias do agronegócio regional",
+      "url": "/pages/agronegocio.html",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "32x32",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Turismo",
+      "short_name": "Turismo",
+      "description": "Turismo e eventos regionais",
+      "url": "/pages/turismo.html",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "32x32",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshot-desktop.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Portal Paranavaí News - Versão Desktop"
+    },
+    {
+      "src": "/assets/images/screenshot-mobile.jpg",
+      "sizes": "720x1280",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Portal Paranavaí News - Versão Mobile"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://paranavainews.vercel.app/manifest.json"
+    }
+  ],
+  "prefer_related_applications": false,
+  "dir": "ltr",
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7"
+}

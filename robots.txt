@@ -1,0 +1,45 @@
+# Robots.txt para Portal Paranavaí News
+# https://paranavainews.vercel.app
+
+# Permitir todos os bots em todas as áreas públicas
+User-agent: *
+Allow: /
+
+# Bloquear áreas administrativas e privadas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.vercel/
+Disallow: /node_modules/
+Disallow: /backend/
+Disallow: /*.json$
+Disallow: /*.py$
+
+# Permitir especificamente para bots importantes
+User-agent: Googlebot
+Allow: /
+Allow: /assets/
+Allow: /pages/
+
+User-agent: Bingbot
+Allow: /
+Allow: /assets/
+Allow: /pages/
+
+# Configurações específicas para redes sociais
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+# Delay para evitar sobrecarga (1 segundo)
+Crawl-delay: 1
+
+# Localização do sitemap
+Sitemap: https://paranavainews.vercel.app/sitemap.xml
+
+# Informações adicionais
+# Portal: Portal Paranavaí News
+# Categoria: Notícias Regionais
+# Região: Paranavaí, Paraná, Brasil
+# Contato: contato@paranavainews.com.br
