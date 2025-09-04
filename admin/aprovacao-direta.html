@@ -450,6 +450,26 @@
         .header-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .refresh-btn {
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        @media (max-width: 1200px) {
+            .header-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .refresh-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 768px) {
