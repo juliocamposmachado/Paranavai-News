@@ -1,6 +1,17 @@
-# Portal Paranavaí News
+# Portal Paranavaí News v2.0 🆕
 
 Portal de notícias oficial da região de Paranavaí e Paraná, desenvolvido sob a gerência de projetos de **Matheus Lima** e com apoio do **Deputado Leônidas Fávero Neto**.
+
+🆕 **NOVA VERSÃO 2.0**: Agora com **Dashboard Administrativa** completa para gestão de conteúdo!
+
+## 🔗 Acesso Rápido
+
+| Área | URL | Credenciais |
+|------|-----|-------------|
+| 🏠 **Site Principal** | https://paranavai-news.vercel.app | Acesso público |
+| 🔧 **Dashboard Admin** | https://paranavai-news.vercel.app/admin | **Usuário**: `Matheus`<br>**Senha**: `Admin78451200` |
+| 📊 **API Pública** | https://paranavai-news.vercel.app/api/noticias | Acesso público |
+| ⚙️ **API Admin** | https://paranavai-news.vercel.app/api/admin | Token necessário |
 
 ## 🎯 Sobre o Projeto
 
@@ -36,7 +47,25 @@ O Portal Paranavaí News é uma plataforma digital dedicada a cobrir notícias l
 Portal-Noticias-Parana/
 │
 ├── index.html                 # Página principal
+├── server_admin.js            # Servidor Node.js integrado 🆕
 ├── README.md                  # Documentação
+├── DASHBOARD_ADMIN.md         # Manual da Dashboard 🆕
+│
+├── admin/                     # Dashboard Administrativa 🆕
+│   ├── index.html             # Interface da dashboard
+│   ├── css/
+│   │   └── admin.css          # Estilos da dashboard
+│   └── js/
+│       └── admin.js           # Lógica da dashboard
+│
+├── api/                       # APIs do sistema 🆕
+│   ├── admin.js               # API administrativa
+│   ├── noticias.js            # API pública
+│   └── ...
+│
+├── backend/                   # Sistema backend 🆕
+│   ├── content_processor.js   # Processador automático
+│   └── cache/                 # Cache de dados
 │
 ├── assets/
 │   ├── css/
@@ -44,20 +73,17 @@ Portal-Noticias-Parana/
 │   ├── js/
 │   │   └── script.js         # Funcionalidades JavaScript
 │   └── images/               # Imagens do site
-│       ├── portfolio/        # Portfolio fotográfico
-│       └── ...
 │
 └── pages/
     ├── leonidas.html         # Página do Deputado Leônidas
     ├── matheus.html          # Página do Matheus Lima
     ├── politica.html         # Notícias de Política
-    ├── contato.html          # Página de Contato
     └── ...
 ```
 
 ## 🚀 Funcionalidades
 
-### Implementadas
+### ✅ Site Público (Implementadas)
 - ✅ Design responsivo para todos os dispositivos
 - ✅ Sistema de navegação intuitivo
 - ✅ Seções organizadas por categoria
@@ -69,14 +95,29 @@ Portal-Noticias-Parana/
 - ✅ Botão "voltar ao topo"
 - ✅ Animações e transições suaves
 
-### JavaScript Avançado
-- 🔧 Sistema de busca em tempo real
-- 🔧 Filtros por categoria
-- 🔧 Compartilhamento social
-- 🔧 Contador de visitantes
-- 🔧 Modo claro/escuro
-- 🔧 Lazy loading de imagens
-- 🔧 Analytics básico
+### 🆕 Dashboard Administrativa (NOVO v2.0)
+- ✅ **Login Seguro**: Autenticação para Matheus Lima
+- ✅ **Gestão de Conteúdo**: Aprovar/reprovar notícias antes da publicação
+- ✅ **Visualização Detalhada**: Modal para revisar conteúdo completo
+- ✅ **Estatísticas**: Métricas de aprovação em tempo real
+- ✅ **Interface Responsiva**: Funciona em desktop, tablet e mobile
+- ✅ **Processamento Automático**: Coleta e organiza conteúdo automaticamente
+- ✅ **Sistema de Cache**: Armazenamento eficiente de dados
+
+### 🔌 APIs Disponíveis
+- ✅ **API Pública**: `/api/noticias` - Acesso público às notícias aprovadas
+- ✅ **API Administrativa**: `/api/admin` - Gestão de conteúdo
+- ✅ **Autenticação**: Sistema de tokens seguros
+- ✅ **CORS**: Configurado para acesso externo
+
+### 🔧 Melhorias Avançadas
+- ✅ Sistema de busca em tempo real
+- ✅ Filtros por categoria e data
+- ✅ Compartilhamento social
+- ✅ Contador de visitantes
+- ✅ Modo claro/escuro
+- ✅ Lazy loading de imagens
+- ✅ Analytics integrado
 
 ## 🎨 Design
 
@@ -100,10 +141,38 @@ O portal é totalmente responsivo e otimizado para:
 
 ## 🛠️ Como Usar
 
-1. **Abrir o Portal**: Abra o arquivo `index.html` em qualquer navegador
+### 🏠 Site Público
+1. **Acesso**: https://paranavai-news.vercel.app
 2. **Navegação**: Use o menu principal para acessar diferentes seções
 3. **Contato**: Utilize os formulários ou informações de contato disponíveis
 4. **Newsletter**: Cadastre-se para receber notícias por email
+
+### 🔧 Dashboard Administrativa (NOVO) 🆕
+1. **Acesso**: https://paranavai-news.vercel.app/admin
+2. **Login**: 
+   - **Usuário**: `Matheus`
+   - **Senha**: `Admin78451200`
+3. **Gestão**:
+   - Visualizar conteúdo pendente
+   - Aprovar/rejeitar notícias
+   - Acompanhar estatísticas
+   - Gerenciar publicações
+
+### 🛠️ Para Desenvolvedores
+```bash
+# Clonar repositório
+git clone https://github.com/juliocamposmachado/Paranavai-News.git
+
+# Instalar dependências
+npm install
+
+# Executar localmente
+npm start
+# Dashboard disponível em: http://localhost:3000/admin
+
+# Build para produção
+npm run build
+```
 
 ## 📧 Contatos
 
@@ -126,11 +195,24 @@ O portal é totalmente responsivo e otimizado para:
 
 ## 🔧 Tecnologias Utilizadas
 
+### Frontend
 - **HTML5**: Estrutura semântica
 - **CSS3**: Estilos modernos, Flexbox, Grid
 - **JavaScript**: Interatividade e funcionalidades
 - **Font Awesome**: Ícones
 - **Google Fonts**: Tipografia
+
+### Backend (NOVO v2.0) 🆕
+- **Node.js**: Servidor backend
+- **Express.js**: Framework web
+- **Cheerio**: Web scraping
+- **Axios**: Requisições HTTP
+- **Crypto**: Segurança e autenticação
+
+### Deploy e DevOps
+- **Vercel**: Hospedagem e deploy automático
+- **Git**: Controle de versão
+- **npm**: Gerenciamento de dependências
 
 ## 📝 Categorias de Conteúdo
 
