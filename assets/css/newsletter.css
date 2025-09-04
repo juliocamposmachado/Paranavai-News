@@ -1,0 +1,427 @@
+/**
+ * Newsletter Form Styles
+ * Portal Paranavaí News
+ * 
+ * Estilos para feedback visual, validações e estados do formulário
+ */
+
+/* ===========================================
+   NEWSLETTER SECTION STYLES
+   =========================================== */
+
+.newsletter-section {
+    background: linear-gradient(135deg, #1e4a73 0%, #2c6aa0 100%);
+    padding: 60px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.newsletter-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="90" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+    opacity: 0.3;
+}
+
+.newsletter-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.newsletter-content h2 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.newsletter-content p {
+    color: #e8f4f8;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===========================================
+   FORM STYLES
+   =========================================== */
+
+.newsletter-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.newsletter-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+}
+
+.newsletter-form.submitting {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Form Groups */
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 18px 20px 18px 55px;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    outline: none;
+    color: #2c3e50;
+}
+
+.form-group input:focus {
+    border-color: #1e4a73;
+    box-shadow: 0 0 0 3px rgba(30, 74, 115, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group input:valid {
+    border-color: #27ae60;
+}
+
+.form-group input::placeholder {
+    color: #95a5a6;
+    font-weight: 400;
+}
+
+/* Input Icons */
+.input-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.form-group input:focus + .input-icon {
+    color: #1e4a73;
+}
+
+.form-group.has-error input:focus + .input-icon {
+    color: #e74c3c;
+}
+
+/* Submit Button */
+#newsletter-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #1e4a73 0%, #2c6aa0 100%);
+    color: white;
+    border: none;
+    padding: 18px 25px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+#newsletter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+#newsletter-btn:hover::before {
+    left: 100%;
+}
+
+#newsletter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(30, 74, 115, 0.4);
+}
+
+#newsletter-btn:active {
+    transform: translateY(0);
+}
+
+#newsletter-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#newsletter-btn:disabled::before {
+    display: none;
+}
+
+/* ===========================================
+   FEEDBACK MESSAGES
+   =========================================== */
+
+.form-message {
+    margin-top: 20px;
+    padding: 0;
+    border-radius: 12px;
+    display: none;
+    animation: slideInUp 0.3s ease-out;
+}
+
+.form-message .message-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-message.success .message-content {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+.form-message.error .message-content {
+    background: linear-gradient(135deg, #e74c3c, #ec7063);
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.form-message i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* ===========================================
+   FIELD VALIDATION ERRORS
+   =========================================== */
+
+.form-group.has-error input {
+    border-color: #e74c3c;
+    background: #fdf2f2;
+}
+
+.form-group.has-error input:focus {
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.field-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #e74c3c;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 8px;
+    animation: slideInUp 0.2s ease-out;
+}
+
+.field-error i {
+    font-size: 0.9rem;
+}
+
+/* ===========================================
+   NEWSLETTER PRIVACY
+   =========================================== */
+
+.newsletter-privacy {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.newsletter-privacy p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.newsletter-privacy i {
+    color: #27ae60;
+    font-size: 1rem;
+}
+
+/* ===========================================
+   LOADING STATES
+   =========================================== */
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.newsletter-form.submitting {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 768px) {
+    .newsletter-section {
+        padding: 40px 0;
+    }
+    
+    .newsletter-content h2 {
+        font-size: 2rem;
+    }
+    
+    .newsletter-content p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .newsletter-form {
+        margin: 0 20px;
+        padding: 30px 25px;
+        border-radius: 15px;
+    }
+    
+    .form-group input {
+        padding: 16px 18px 16px 50px;
+        font-size: 0.95rem;
+    }
+    
+    .input-icon {
+        left: 18px;
+        font-size: 1rem;
+    }
+    
+    #newsletter-btn {
+        padding: 16px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .newsletter-content h2 {
+        font-size: 1.75rem;
+    }
+    
+    .newsletter-form {
+        margin: 0 15px;
+        padding: 25px 20px;
+    }
+    
+    .form-group input {
+        padding: 14px 16px 14px 45px;
+    }
+    
+    .input-icon {
+        left: 16px;
+    }
+}
+
+/* ===========================================
+   ACCESSIBILITY IMPROVEMENTS
+   =========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .newsletter-form,
+    .form-message,
+    .field-error,
+    #newsletter-btn,
+    .form-group input {
+        transition: none;
+        animation: none;
+    }
+    
+    .newsletter-form.submitting {
+        animation: none;
+    }
+}
+
+/* Focus visible for keyboard users */
+.form-group input:focus-visible {
+    outline: 2px solid #1e4a73;
+    outline-offset: 2px;
+}
+
+#newsletter-btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .newsletter-form {
+        background: #ffffff;
+        border: 2px solid #000000;
+    }
+    
+    .form-group input {
+        border-color: #000000;
+    }
+    
+    .form-message.success .message-content {
+        background: #008000;
+        border: 1px solid #000000;
+    }
+    
+    .form-message.error .message-content {
+        background: #ff0000;
+        border: 1px solid #000000;
+    }
+}

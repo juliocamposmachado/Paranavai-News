@@ -62,6 +62,7 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/newsletter.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -307,10 +308,27 @@
             <div class="newsletter-content">
                 <h2>Receba nossas notícias</h2>
                 <p>Cadastre-se para receber as principais notícias da região diretamente no seu email</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Seu melhor email" required>
-                    <button type="submit">Cadastrar</button>
+                <form class="newsletter-form" id="newsletter-form">
+                    <div class="form-group">
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+                        <div class="input-icon"><i class="fas fa-user"></i></div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Seu melhor email" required>
+                        <div class="input-icon"><i class="fas fa-envelope"></i></div>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="WhatsApp (opcional)" pattern="[0-9\s\(\)\-\+]*">
+                        <div class="input-icon"><i class="fab fa-whatsapp"></i></div>
+                    </div>
+                    <button type="submit" id="newsletter-btn">
+                        <i class="fas fa-paper-plane"></i> Cadastrar
+                    </button>
+                    <div id="newsletter-message" class="form-message"></div>
                 </form>
+                <div class="newsletter-privacy">
+                    <p><i class="fas fa-shield-alt"></i> Seus dados estão seguros. Não fazemos spam.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -467,6 +485,7 @@
     <script src="assets/js/noticias-parceiros.js"></script>
     <script src="assets/js/noticias-destaque.js"></script>
     <script src="assets/js/noticias-supabase.js"></script>
+    <script src="assets/js/newsletter.js"></script>
     
     <script>
     // Fallback caso a API não esteja disponível
